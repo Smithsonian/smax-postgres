@@ -1,0 +1,80 @@
+name: Build
+
+on: 
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/**'
+      - 'include/**'
+      - 'Makefile'
+      - '*.mk'
+      - '.github/workflows/build.yml'
+
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'include/**'
+      - 'Makefile'
+      - '*.mk'
+      - '.github/workflows/build.yml'
+
+jobs:
+
+  build:
+    name: Build library
+
+    runs-on: ubuntu-latest
+    env:
+      CC: gcc
+      CPPFLAGS: -I/usr/include/postgresql
+      CFLAGS: -Os -Wall -Wextra -Werror -std=c99
+      XCHANGE: ../xchange
+      REDISX: ../redisx
+      SMAXLIB: ../smax-clib
+    steps:
+    - name: install PostgreSQL
+      run: sudo apt-get install libpq-dev
+    
+    - name: install systemd development files
+      run: sudo apt-get install libsystemd-dev
+   
+    - name: install popt development files
+      run: sudo apt-get install libpopt-dev
+    
+    - name: Check out smax-postgres
+      uses: actions/checkout@v4
+      with:
+        repository: Smithsonian/smax-postgres
+        path: smax-postgres
+    
+    - name: Check out smax-clib
+      uses: actions/checkout@v4
+      with:
+        repository: Smithsonian/smax-clib
+        path: smax-clib
+      
+    - name: Check out xchange dependency
+      uses: actions/checkout@v4
+      with:
+        repository: Smithsonian/xchange
+        path: xchange
+    
+    - name: Check out RedisX dependency
+      uses: actions/checkout@v4
+      with:
+        repository: Smithsonian/redisx
+        path: redisx
+      
+    - name: Build xchange dependency
+      run: make -C xchange shared
+      
+    - name: Build RedisX dependency
+      run: make -C redisx shared
+      
+    - name: Build shared library
+      run: make -C smax-clib shared
+
+    - name: Build smax-postgres application
+      run: make -C smax-postgres app
+      

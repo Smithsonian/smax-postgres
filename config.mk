@@ -58,6 +58,13 @@ CFLAGS ?= -Os -Wall -std=c99
 # Link against math libs (for e.g. isnan())
 LDFLAGS ?= -lm
 
+# Compile and link against a specific PostgreSQL library (if defined)
+ifdef PGDIR
+  CPPFLAGS += -I$(PGDIR)/include
+  LDFLAGS += -L$(PGDIR)/lib
+  LD_LIBRARY_PATH = $(PGDIR)/lib:$(LD_LIBRARY_PATH)
+endif
+
 # Compile and link against a specific smax library (if defined)
 ifdef SMAXLIB
   CPPFLAGS += -I$(SMAXLIB)/include

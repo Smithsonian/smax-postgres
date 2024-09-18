@@ -1,0 +1,153 @@
+name: API documentation
+
+on:
+  release:
+    types: [published]
+
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/**'
+      - 'include/**'
+      - 'css/**'
+      - 'resources/**'
+      - 'Doxyfile'
+      - '*.md'
+      - '.github/workflows/dox.yml'
+
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'include/**'
+      - 'css/**'
+      - 'resources/**'
+      - 'Doxyfile'
+      - '*.md'
+      - '.github/workflows/dox.yml'
+
+
+jobs:
+
+  apidocs:
+    name: Generate API documentation
+
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: install doxygen
+      run: sudo apt-get install doxygen
+
+    - name: Check out smax-clib
+      uses: actions/checkout@v4
+
+    - name: Generate docs
+      run: make local-dox
+
+  site-update:
+    name: Update github pages
+    needs: apidocs
+    if: github.repository_owner == 'Smithsonian' && (github.event_name == 'release' || contains(github.event.head_commit.message, 'site update'))
+
+    runs-on: ubuntu-latest
+    steps:
+    
+    - name: install doxygen
+      run: sudo apt-get install doxygen
+
+    - name: Checkout smax-clib
+      uses: actions/checkout@v4
+      with:
+        repository: Smithsonian/smax-postgres
+        path: smax-postgres
+
+    - name: Check out xchange dependency
+      uses: actions/checkout@v4
+      with:
+        repository: Smithsonian/xchange
+        path: xchange
+        
+    - name: Check out RedisX dependency
+      uses: actions/checkout@v4
+      with:
+        repository: Smithsonian/redisx
+        path: redisx
+        
+    - name: Generate docs
+      run: make -C xchange local-dox 
+
+    - name: Generate docs
+      run: make -C redisx local-dox  
+
+    - name: Generate docs
+      run: make -C smax-clib local-dox  
+
+    - name: Generate headless README for smax-clib
+      run: make -C smax-postgres README-smax-postgres.md
+
+    - name: Generate smax-clib apidocs
+      uses: mattnotmitt/doxygen-action@v1.9.8
+      with:
+        additional-packages: font-roboto
+        working-directory: ./smax-clib
+
+    - name: Checkout gh-pages
+      uses: actions/checkout@v4
+      with:
+        ref: 'gh-pages'
+        path: site
+
+    - name: Assert site/doc/
+      run: mkdir -p site/doc
+
+    - name: Copy README
+      run: |
+        echo '<img src="/smax-clib/resources/CfA-logo.png" alt="CfA logo" width="400" height="67" align="right">' > site/doc/README.md
+        echo '<br clear="all">' >> site/doc/README.md
+        cat smax-clib/README-smax.md >> site/doc/README.md
+
+    - name: Copy CHANGELOG
+      run: cp smax-clib/CHANGELOG.md site/doc/
+
+    - name: Copy API documentation
+      run: cp -a smax-clib/apidoc site/
+
+    - name: Push to pages
+      run: |
+        cd site
+        git config --global user.email "$GITHUB_JOB+github-actions[bot]@users.noreply.github.com"
+        git config --global user.name "github-actions"
+        git add -A
+        git commit -m "[automated site update]" && git push || true
+
+
+  changelog-update:
+    name: Update CHANGELOG on github pages
+    if: github.repository_owner == 'Smithsonian' && contains(github.event.head_commit.message, 'changelog update')
+
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout source
+      uses: actions/checkout@v4
+
+    - name: Checkout gh-pages
+      uses: actions/checkout@v4
+      with:
+        ref: 'gh-pages'
+        path: site
+
+    - name: Assert site/doc/
+      run: mkdir -p site/doc
+
+    - name: Copy CHANGELOG
+      run: cp CHANGELOG.md site/doc/
+
+    - name: Push to pages
+      run: |
+        cd site
+        git config --global user.email "$GITHUB_JOB+github-actions[bot]@users.noreply.github.com"
+        git config --global user.name "github-actions"
+        git add -A
+        git commit -m "[automated site update]" && git push || true
+
