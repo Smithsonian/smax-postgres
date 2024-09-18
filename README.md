@@ -1,3 +1,20 @@
+![Build Status](https://github.com/Smithsonian/smax-postgres/actions/workflows/build.yml/badge.svg)
+![Static Analysis](https://github.com/Smithsonian/smax-postgres/actions/workflows/check.yml/badge.svg)
+<a href="https://smithsonian.github.io/smax-postgres/apidoc/html/files.html">
+ ![API documentation](https://github.com/Smithsonian/smax-postgres/actions/workflows/dox.yml/badge.svg)
+</a>
+<a href="https://smithsonian.github.io/smax-postgres/index.html">
+ ![Project page](https://github.com/Smithsonian/smax-postgres/actions/workflows/pages/pages-build-deployment/badge.svg)
+</a>
+
+<picture>
+  <source srcset="resources/CfA-logo-dark.png" alt="CfA logo" media="(prefers-color-scheme: dark)"/>
+  <source srcset="resources/CfA-logo.png" alt="CfA logo" media="(prefers-color-scheme: light)"/>
+  <img src="resources/CfA-logo.png" alt="CfA logo" width="400" height="67" align="right"/>
+</picture>
+<br clear="all">
+
+
 # Record SMA-X history in PostgreSQL / TimescaleDB
 
 `smax-postgres` is a daemon application, which can collect data from an SMA-X realtime database and insert these into 
@@ -5,43 +22,102 @@ a PostgreSQL database to create a time-series historical record for all or selec
 highly customizable and supports both regular updates for changing variables as well as regular snapshots of all 
 selected SMA-X variables.
 
+ - [API documentation](https://smithsonian.github.io/smax-postgres/apidoc/html/files.html)
+ - [Project page](https://smithsonian.github.io/smax-postgres) on github.io
+
+----------------------------------------------------------------------------------------------------------------------
+
 ## Table of Contents
 
+- [Prerequisites](#prerequisites)
+- [Buildinh smax-postgres](#building)
 - [Installation](#installation)
 - [Database organization (for clients)](#database-organization)
 - [Configuration reference](#configuration-reference)
 
 ----------------------------------------------------------------------------------------------------------------------
 
-<a name="installation"></a>
-## Installation
+<a name="prerequisites"></a>
+## Prerequisites
 
-To build `smax-postgres` from source, you'll need to install a couple of build dependencies. First, make sure you 
-have the standard C development tools (such as `gcc` with `glibc` and corresponding headers, GNU `make`). You'll 
-also need a PostgreSQL installation, complete with headers and development libraries (`-dev` package(s) in 
-Debian-based distros or `-devel` package(s) in RPM based distros), as well as the `popt` development libraries 
-(`libpopt-dev`in Debian, or `popt-devel` in RPM distros) for command line option processing.
+The SMA-X C/C++ library has a build and runtime dependency on the following software:
 
-### Building `smax-postgres` from source
+ - PostgreSQL installation and development files (`libpq.so` and `lipq.fe.h`).
+ - [Smithsonian/clib](https://github.com/Smithsonian/smax-clib)
+ - [Smithsonian/redisx](https://github.com/Smithsonian/redisx)
+ - [Smithsonian/xchange](https://github.com/Smithsonian/xchange)
+ - `popt` development libraries (`libpopt-dev`in Debian, or `popt-devel` in RPM distros)
+ - (_optional_) TimescaleDB extensions.
+ - (_optional_) systemd development files (`libsystemd.so` and `sd-daemon.h`).
 
-Before you compile `smax-postgres`, check and edit the `Makefile` as necessary.
+Additionally, to configure your SMA-X server, you will need the 
+[Smithsonian/smax-server](https://github.com/Smithsonian/smax-server) repo also.
 
-You can change the default install location(s) by editing the `INSTALL_*` variables to customize to your needs. 
-You can also enable or disable systemd integration by setting or commenting the `SYSTEMD=1` line (qhich requires that
-you install the systemd development packages also, such as `libsystemd-dev` on Debian or `systemd-devel` on RPM-based
-distros).
+----------------------------------------------------------------------------------------------------------------------
 
-To use the TimescaleDB extension, you will need to install the extension package also. And, if using an older version 
-of TimescaleDB (prior to 2.13), you may want to uncomment the `DFLAGS += -DTIMESCALEDB_OLD=1` line in the `Makefile`.
+<a name="building"></a>
+## Building smax-postgres
 
-Next you need to `source setup.sh` from the root directory of the repository. This configures variables for the build 
-(sort of like `./configure` would for more typical POSIX builds).
+The __smax-clib__ library can be built either as a shared (`libsmax.so[.1]`) and as a static (`libsmax.a`) library, 
+depending on what suits your needs best.
+
+You can configure the build, either by editing `config.mk` or else by defining the relevant environment variables 
+prior to invoking `make`. The following build variables can be configured:
+
+ - `PGDIR`: Root directory of the PostgreSQL installation. Default is `/usr/pgsql-16`.
+
+ - `XCHANGE`: the root of the location where the [Smithsonian/xchange](https://github.com/Smithsonian/xchange) library 
+   is installed. It expects to find `xchange.h` under `$(XCHANGE)/include` and `libxchange.so` under `$(XCHANGE)/lib`
+   or else in the default `LD_LIBRARY_PATH`.
+   
+ - `REDISX`: the root of the location where the [Smithsonian/redisx](https://github.com/Smithsonian/redisx) library 
+   is installed. It expects to find `redisx.h` under `$(REDISX)/include` and `libredisx.so` under `$(REDISX)/lib`
+   or else in the default `LD_LIBRARY_PATH`.
+   
+ - `SMAXLIB`: the root of the location where the [Smithsonian/smax-clib](https://github.com/Smithsonian/smax-clib) 
+   library is installed. It expects to find `smax.h` under `$(SMAXLIB)/include` and `libsmax.so` under 
+   `$(SMAXLIB)/lib` or else in the default `LD_LIBRARY_PATH`.
+  
+ - `SYSTEMD`: Sets whether to compile with `systemd` integration (needs `libsystemd.so` and `sd-daemon.h`). Default
+   is 1 (enabled).
+   
+ - `SYSTEMD`: Sets whether to compile with `systemd` integration (needs `libsystemd.so` and `sd-daemon.h`). Default
+   is 1 (enabled).
+   
+ - `CC`: The C compiler to use (default: `gcc`).
+
+ - `CPPFLAGS`: C pre-processor flags, such as externally defined compiler constants.
+ 
+ - `CFLAGS`: Flags to pass onto the C compiler (default: `-Os -Wall -std=c99`). Note, `-Iinclude` will be added 
+   automatically.
+   
+ - `LDFLAGS`: Linker flags (default is `-lm`). Note, `-lpq -lsmax -lredisx -lxchange -lpthread -lpopt` will be added 
+   automatically.
+
+ - `BUILD_MODE`: You can set it to `debug` to enable debugging features: it will initialize the global `xDebug` 
+   variable to `TRUE` and add `-g` to `CFLAGS`.
+
+ - `CHECKEXTRA`: Extra options to pass to `cppcheck` for the `make check` target
+ 
+After configuring, you can simply run `make`, which will build the `shared` (`lib/libsmax.so[.1]`) and `static` 
+(`lib/libsmax.a`) libraries, local HTML documentation (provided `doxygen` is available), and performs static
+analysis via the `check` target. Or, you may build just the components you are interested in, by specifying the
+desired `make` target(s). (You can use `make help` to get a summary of the available `make` targets). 
 
 Now you may compile `smax-postgres`:
 
 ```bash
   $ make
 ```
+
+----------------------------------------------------------------------------------------------------------------------
+
+<a name="installation"></a>
+## Installation
+
+Prior to installation, you should check that the postgresql service name is correct in `smax-postgres.service`, and
+edit it as necessary for your system configuration. You may also edit the `cfg/smax-postgres.cfg` now, or after it
+is installed.
 
 Provided the build was successful, you can install the executables, configuration files, and optionally the systemd 
 unit files via:
@@ -50,9 +126,37 @@ unit files via:
   $ sudo make install
 ```
 
-(In case of systemd integration it will also reload the daemon so `smax-postgres.service` can be enabled and managed as 
-desired.)
+(When installing at the SMA, you may want `make install-sma` instead, to install with SMA-specific configuration).
+In case of systemd integration you should also reload the systemd daemon so `smax-postgres.service` can be enabled 
+and managed as desired:
 
+```bash
+  $ sudo systemd daemon-reload
+```
+
+After that you can start the service as:
+
+```bash
+  $ sudo systemd start smax-postgres
+```
+
+### Staging / advanced installation
+
+By default, `make install` will install the `smax-postgress` executable to `/usr/bin`, configuration under `/etc/`,
+systemd service unit under `/etc/systemd/system`, and documentation under `/usr/share/doc/smax-postgres/`. Instead of
+`/usr`, you may want to install into another destination, such as `/opt/` or `/usr/local`. You can do that by setting
+the `DESTDIR` environment prior to `make install`, e.g.:
+
+```bash
+  $ export DESTDIR="/opt"
+```
+
+Additionally, you can also stage the installation under a different root, by setting the `PREFIX` environment variable,
+e.g.:
+
+```bash
+  $ export PREFIX="~/rmpbuild/BUILD/smax-postgres"
+```
 
 ### Standard error/output with systemd integration
 
@@ -273,5 +377,8 @@ want to still get a preview of what that data was, by storing every n'th sample 
 an array with 1000 entries, you may want to store say 20 samples. Setting `<n>` to 50 will achieve that, by storing 
 every 50th element in the SQL database only. (Still, the SQL database will store the original dimensionality of the 
 downsampled variables, and note the downsampling factor used also as metadata).
+
+-----------------------------------------------------------------------------
+Copyright (C) 2024 Attila Kovács
 
 

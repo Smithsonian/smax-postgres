@@ -28,9 +28,18 @@ else
   $(info WARNING! Doxygen is not available. Will skip 'dox' target) 
 endif
 
+ifdef PREFIX
+  STAGE=$(PREFIX)/$(DESTDIR)
+else
+  STAGE=$(DESTDIR)
+endif
+
 # Build everything...
 .PHONY: all
-all: app $(DOC_TARGETS) check
+all: deploy check
+
+.PHONY: deploy
+deploy: app $(DOC_TARGETS)
 
 # Remove intermediates
 .PHONY: clean
@@ -52,6 +61,7 @@ SOURCES = $(SRC)/smax-postgres.c $(SRC)/logger-config.c $(SRC)/postgres-backend.
 OBJECTS := $(subst $(SRC),$(OBJ),$(SOURCES))
 OBJECTS := $(subst .c,.o,$(OBJECTS))
 
+.PHONY: app
 app: $(BIN)/smax-postgres
 
 $(BIN)/smax-postgres: $(OBJECTS) | $(BIN)
@@ -72,6 +82,41 @@ Doxyfile.local: Doxyfile Makefile
 local-dox: README-smax-postgres.md Doxyfile.local
 	doxygen Doxyfile.local
 
+CONFIG := "cfg/smax-postgres.cfg"
+
+.PHONY: install
+install: deploy
+	@echo "Installing under $(STAGE)."
+	
+	@mkdir -p $(STAGE)/bin
+	@install -m 755 $(BIN)/smax-postgres $(STAGE)/bin/
+	
+	@mkdir -p $(STAGE)/etc
+	@if [ ! -e $(PREFIX)/etc/smax-postgres.cfg ] ; then \
+	  install -m 644 cfg/smax-postgres.cfg $(PREFIX)/etc/smax-postgres.cfg ; \
+	fi
+	
+	@if [ $(SYSTEMD) -ne 0 ] ; then \
+	  mkdir -p $(STAGE)/etc/systemd/system ; \
+	  install -m 644 smax-postgres.service $(STAGE)/etc/systemd/system/ ; \
+  	  sed -i "s:/usr/:$(STAGE):g" $(STAGE)/etc/systemd/system/smax-postgres.service ; \
+	fi
+	
+	@mkdir -p $(STAGE)/share/doc/smax-postgres
+	@install -m 644 LICENSE $(STAGE)/share/doc/smax-postgres/
+	@install -m 644 README-smax-postgres.md $(STAGE)/share/doc/smax-postgres/README.md
+	@install -m 644 CHANGELOG.md $(STAGE)/share/doc/smax-postgres/
+	
+	@if [ -e apidoc/html/index.html ] ; then \
+	  mkdir -p $(STAGE)/share/doc/smax-postgres/html/search ; \
+	  install -m 644 -D apidoc/html/* $(STAGE)/share/doc/html/smax-postgres/ ; \
+	  install -m 644 -D apidoc/html/search/* $(STAGE)/share/doc/smax-postgres/html/search/ ; \
+	fi
+
+.PHONY: install-sma
+install-sma: CONFIG := "cfg/smax-postgres.cfg.sma"
+install-sma: install
+
 # Built-in help screen for `make help`
 .PHONY: help
 help:
@@ -84,6 +129,8 @@ help:
 	@echo "  local-dox     Compiles local HTML API documentation using 'doxygen'."
 	@echo "  check         Performs static analysis with 'cppcheck'."
 	@echo "  all           All of the above."
+	@echo "  install       Install (may require sudo)"
+	@echo "  install-sma   Install at the SMA (with sudo)"
 	@echo "  clean         Removes intermediate products."
 	@echo "  distclean     Deletes all generated files."
 	@echo
