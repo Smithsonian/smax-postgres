@@ -1,59 +1,100 @@
-# Load the common Makefile definitions...
-include $(GLOBALINC)/setup.mk
+# ===============================================================================
+# WARNING! You should leave this Makefile alone probably
+#          To configure the build, you can edit config.mk, or else you export the 
+#          equivalent shell variables prior to invoking 'make' to adjust the
+#          build configuration. 
+# ===============================================================================
 
-# PostgresSQL installation directory, including libraries and headers
-PGDIR = /usr/pgsql-14
+include config.mk
 
-# Uncomment if using timescaleDB < 2.13 (version 2.13 introduced a new interface)
-#DFLAGS += -DTIMESCALEDB_OLD=1
+# ===============================================================================
+# Specific build targets and recipes below...
+# ===============================================================================
 
-# Root path for installation, such as /usr, /usr/local, or /opt
-INSTALL_ROOT = /usr/local
+# Link against necessary system libraries
+LDFLAGS += -pthread -lm -lpopt
 
-# installation path for binaries, by default $(INSTALL_ROOT)/bin
-INSTALL_BIN = $(INSTALL_ROOT)/bin
-
-# installation path for config files, by default $(INSTALL_ROOT)/etc
-INSTALL_CFG = $(INSTALL_ROOT)/etc/smaxLogger
-
-# Whether to compile with systemd integration
-SYSTEMD = 1
-
-BUILD_HOSTS = smax-engdb
-TARGET_HOSTS = smax-engdb
-
-IFLAGS += -I$(PGDIR)/include
-LDFLAGS += -L$(PGDIR)/lib
-
-SMAX_GRAB = $(OBJ)/smax-collector.o $(SMAX) $(SMAX_LEGACY)
-
-LDFLAGS += $(THREADS) -lpq -lm -lpopt
-
-ifeq ($(SYSTEMD),1) 
-  DFLAGS += -DUSE_SYSTEMD=1
-  LDFLAGS += -lsystemd
+# Check if there is a doxygen we can run
+ifndef DOXYGEN
+  DOXYGEN := $(shell which doxygen)
+else
+  $(shell test -f $(DOXYGEN))
 endif
 
-DFLAGS += -DFIX_PYSMAX_STRING_DIM=1
+# If there is doxygen, build the API documentation also by default
+ifeq ($(.SHELLSTATUS),0)
+  DOC_TARGETS += local-dox
+else
+  $(info WARNING! Doxygen is not available. Will skip 'dox' target) 
+endif
 
-#CFLAGS0 += -g
+# Build everything...
+.PHONY: all
+all: app $(DOC_TARGETS) check
 
-all: $(BIN)/smaxLogger
+# Remove intermediates
+.PHONY: clean
+clean:
+	rm -f $(OBJECTS) README-smax-postgres.md gmon.out
 
-# Prerequisites for generic build executables
-$(BIN)/smaxLogger: $(OBJ)/smaxLogger.o $(OBJ)/logger-config.o $(OBJ)/postgres-backend.o $(SMAX_GRAB)
+# Remove all generated files
+.PHONY: distclean
+distclean: clean
+	rm -f Doxyfile.local $(BIN)/smax-postgress
 
-.PHONY: install
-install: all
-	cp $(BIN)/smaxLogger $(INSTALL_BIN)/
-	if [ ! -e "$(INSTALL_CFG)" ] ; then \
-		mkdir $(INSTALL_CFG); \
-	fi
-	cp cfg/* $(INSTALL_CFG)/
-	if [ "$(SYSTEMD)" == "1" ] ; then \
-		cp smaxLogger.service /usr/lib/systemd/system/; \
-		systemctl daemon-reload; \
-	fi
+# ----------------------------------------------------------------------------
+# The nitty-gritty stuff below
+# ----------------------------------------------------------------------------
 
-# Default targets / rules / and dependencies...
-include $(GLOBALINC)/recipes.mk
+SOURCES = $(SRC)/smax-postgres.c $(SRC)/logger-config.c $(SRC)/postgres-backend.c $(SRC)/smax-collector.o
+
+# Generate a list of object (obj/*.o) files from the input sources
+OBJECTS := $(subst $(SRC),$(OBJ),$(SOURCES))
+OBJECTS := $(subst .c,.o,$(OBJECTS))
+
+app: $(BIN)/smax-postgres
+
+$(BIN)/smax-postgres: $(OBJECTS) | $(BIN)
+
+README-smax-postgres.md: README.md
+	LINE=`sed -n '/\# /{=;q;}' $<` && tail -n +$$((LINE+2)) $< > $@
+
+dox: README-smax-postgres.md
+
+.INTERMEDIATE: Doxyfile.local
+Doxyfile.local: Doxyfile Makefile
+	sed "s:resources/header.html::g" $< > $@
+	sed -i "s:^TAGFILES.*$$:TAGFILES = :g" $@
+
+# Local documentation without specialized headers. The resulting HTML documents do not have
+# Google Search or Analytics tracking info.
+.PHONY: local-dox
+local-dox: README-smax-postgres.md Doxyfile.local
+	doxygen Doxyfile.local
+
+# Built-in help screen for `make help`
+.PHONY: help
+help:
+	@echo
+	@echo "Syntax: make [target]"
+	@echo
+	@echo "The following targets are available:"
+	@echo
+	@echo "  app           'smax-postgres' application."
+	@echo "  local-dox     Compiles local HTML API documentation using 'doxygen'."
+	@echo "  check         Performs static analysis with 'cppcheck'."
+	@echo "  all           All of the above."
+	@echo "  clean         Removes intermediate products."
+	@echo "  distclean     Deletes all generated files."
+	@echo
+
+# This Makefile depends on the config and build snipplets.
+Makefile: config.mk build.mk
+
+# ===============================================================================
+# Generic targets and recipes below...
+# ===============================================================================
+
+include build.mk
+
+	

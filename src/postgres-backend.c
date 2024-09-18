@@ -8,7 +8,7 @@
  *  use can be selected via an appropriate compiler constant.
  */
 
-#define _GNU_SOURCE
+#define _GNU_SOURCE           ///< C source code standard
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -30,7 +30,11 @@
 #  include <systemd/sd-daemon.h>
 #endif
 
-#include "smaxLogger.h"
+#include "smax-postgres.h"
+
+#ifndef FIX_SCALAR_DIMS
+#  define FIX_SCALAR_DIMS       0                         ///< Whether singled-element 1D data should be stored as scalars
+#endif
 
 #define POSTGRES                1                         ///< Use PostgreSQL data types from sql-types.h
 #include "sql-types.h"
@@ -316,6 +320,7 @@ static void initCache() {
 
     for(k = 0; k < nCols; k++) {
       const char *colName = PQgetvalue(columns, k, 0);
+      const int max = (int) (sizeof(type) - 1);
 
       // Use the first data column to determine how many data columns and what type they are.
       if(strncmp(COL_NAME_STEM "0", colName, sizeof(COL_NAME_STEM)) == 0) {
@@ -326,7 +331,7 @@ static void initCache() {
         nCols -= firstDataCol;
 
         // convert to upper case...
-        for(j = 0; j < (sizeof(type) - 1) && storeType[j]; j++) type[j] = toupper(storeType[j]);
+        for(j = 0; j < max && storeType[j]; j++) type[j] = toupper(storeType[j]);
 
         // Substitute short forms
         shorten(storeType, "CHARACTER VARIABLE", "VARCHAR");
@@ -1130,7 +1135,7 @@ static boolean isMetaUpdate(const Variable *u, const TableDescriptor *t) {
   }
 
   if(u->unit) {
-    int n = strlen(u->unit);
+    size_t n = strlen(u->unit);
     if(n >= sizeof(t->unit)) n = sizeof(t->unit) - 1;
     if(strncmp(u->unit, t->unit, n) != 0) {
       dprintf("! Found new physical unit for %s\n", u->id);

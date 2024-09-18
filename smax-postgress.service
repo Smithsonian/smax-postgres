@@ -1,0 +1,16 @@
+[Unit]
+Description=Log SMA-X variables into a Postgres time-series database
+After=network-online.target postgresql-16.service
+Requires=network-online.target postgresql-16.service
+
+[Service]
+ExecStart=/usr/local/bin/smax-postgres -c /etc/smax-postgres.cfg
+StandardOutput=file:/var/log/smax-postgres.out
+Type=notify
+Restart=on-failure
+RestartSec=60
+
+[Install]
+WantedBy=multi-user.target
+
+

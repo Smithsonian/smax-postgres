@@ -1,0 +1,14 @@
+**/apidoc
+**/obj
+**/bin
+**/dep
+**/lib
+*.d
+*.o
+*~
+*.swp
+README-orig.md
+README-smax-postgres.md
+TODO
+xchange/**
+redisx/**

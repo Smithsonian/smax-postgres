@@ -8,6 +8,9 @@
  *  time-series database at regular intervals.
  */
 
+/// For clock_gettime()
+#define _POSIX_C_SOURCE 200809
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -16,16 +19,17 @@
 #include <errno.h>
 #include <pthread.h>
 
-
 #if USE_SYSTEMD
 #  include <systemd/sd-daemon.h>
 #endif
 
-#include "smaxLogger.h"
+#include "smax-postgres.h"
 #include "redisx.h"
 #include "smax.h"
-#include "smax-legacy.h"
-#include "smadaemon.h"
+
+#ifndef SYSERR_RTN
+#  define SYSERR_RTN            0x40        ///< Exit code indicating not to restart in case of error
+#endif
 
 #define CONNECT_RETRY_INTERVAL  3           ///< (sec) Time between reconnection attempts when initializing.
 #define CONNECT_ATTEMPTS        20          ///< Total number of reconnection attempts when initializing.
@@ -52,7 +56,7 @@ typedef struct {
 } VarGroup;
 
 
-static VarGroup allVars = { "*" };            ///< All SMA-X variables
+static VarGroup allVars = { "*", 0.0 };            ///< All SMA-X variables
 
 static VarGroup *varGroups[] = { &allVars, NULL };
 
@@ -332,7 +336,7 @@ static Update *QueueForUpdate(const char *id, const RedisEntry *units, int nu, c
 
   table = strdup(id);
 
-  if(smaxSplitID(table, &key) != X_SUCCESS) {
+  if(xSplitID(table, &key) != X_SUCCESS) {
     fprintf(stderr, "WARNING! not a table:key id: %s\n", v->id);
     status = X_NAME_INVALID;
   }
@@ -572,6 +576,8 @@ static int Grab(VarGroup *group, const time_t grabTime, boolean isSnapshot) {
  * @param arg       Unused.
  */
 static void *GrabberThread(void *arg) {
+  (void) arg; // unused
+
   pthread_detach(pthread_self());
 
   if(REDIS_SCAN_COUNT > 0) redisxSetScanCount(smaxGetRedis(), REDIS_SCAN_COUNT);

@@ -1,7 +1,7 @@
-# smaxLogger: Logging SMA-X variables into a PostgreSQL time-series database.
+# Record SMA-X history in PostgreSQL / TimescaleDB
 
-`smaxLogger` is a daemon program, which can collect data from an SMA-X realtime database and insert these into a
-PostgreSQL database to create a time-series historical record for all or selected SMA-X variables. The program is
+`smax-postgres` is a daemon application, which can collect data from an SMA-X realtime database and insert these into 
+a PostgreSQL database to create a time-series historical record for all or selected SMA-X variables. The program is
 highly customizable and supports both regular updates for changing variables as well as regular snapshots of all 
 selected SMA-X variables.
 
@@ -16,15 +16,15 @@ selected SMA-X variables.
 <a name="installation"></a>
 ## Installation
 
-To build `smaxLogger` from source, you'll need to install a couple of build dependencies. First, make sure you 
+To build `smax-postgres` from source, you'll need to install a couple of build dependencies. First, make sure you 
 have the standard C development tools (such as `gcc` with `glibc` and corresponding headers, GNU `make`). You'll 
 also need a PostgreSQL installation, complete with headers and development libraries (`-dev` package(s) in 
 Debian-based distros or `-devel` package(s) in RPM based distros), as well as the `popt` development libraries 
 (`libpopt-dev`in Debian, or `popt-devel` in RPM distros) for command line option processing.
 
-### Building `smaxLogger` from source
+### Building `smax-postgres` from source
 
-Before you compile `smaxLogger`, check and edit the `Makefile` as necessary.
+Before you compile `smax-postgres`, check and edit the `Makefile` as necessary.
 
 You can change the default install location(s) by editing the `INSTALL_*` variables to customize to your needs. 
 You can also enable or disable systemd integration by setting or commenting the `SYSTEMD=1` line (qhich requires that
@@ -37,7 +37,7 @@ of TimescaleDB (prior to 2.13), you may want to uncomment the `DFLAGS += -DTIMES
 Next you need to `source setup.sh` from the root directory of the repository. This configures variables for the build 
 (sort of like `./configure` would for more typical POSIX builds).
 
-Now you may compile `smaxLogger`:
+Now you may compile `smax-postgres`:
 
 ```bash
   $ make
@@ -50,7 +50,7 @@ unit files via:
   $ sudo make install
 ```
 
-(In case of systemd integration it will also reload the daemon so `smaxLogger.service` can be enabled and managed as 
+(In case of systemd integration it will also reload the daemon so `smax-postgres.service` can be enabled and managed as 
 desired.)
 
 
@@ -60,34 +60,34 @@ In case of systemd integration, errors will get logged to the journal, and can b
 see the errors in the last 3 hours, you may:
 
 ```bash
-  $ journalctl -u smaxLogger --since "3 hours ago"
+  $ journalctl -u smax-postgres --since "3 hours ago"
 ```
 
-Standard output is logged to the file `/var/log/smaxLogger.out` for the current session. Restarting `smaxLogger` will 
+Standard output is logged to the file `/var/log/smax-postgres.out` for the current session. Restarting `smax-postgres` will 
 start a new file. (Because of buffering, there may be a long lag before you'll see stuff appear in this log file.)
 
 
 
 ### Initial setup of the SQL database
 
-Prior to using `smaxLogger`, you will need to configure users and access privileges (roles) for the database, and may 
-want to create the database instance manually. You will need to create a user designated for the `smaxLogger` program, 
-and specify its credentials in the `smaxLogger` configuration file. This user will not require `CREATEDB` permission, 
+Prior to using `smax-postgres`, you will need to configure users and access privileges (roles) for the database, and may 
+want to create the database instance manually. You will need to create a user designated for the `smax-postgres` program, 
+and specify its credentials in the `smax-postgres` configuration file. This user will not require `CREATEDB` permission, 
 but it will need permission to create tables in the existing database and to insert data or to search the tables
 (i.e. read/write privileges). Additionally, you may also create the designated database instance assigned to whatever 
-user to own. If you create the database manually, do not forget to set the name of the designated database in the `smaxLogger` configuration file.
+user to own. If you create the database manually, do not forget to set the name of the designated database in the `smax-postgres` configuration file.
 
-Normally `smaxLogger` will assume that the database to use has been fully set up, including a 'titles' table 
-(containing 2 columns: _text_ variable IDs, and auto-incremented integer _serial_ numbers). However, `smaxLogger` 
+Normally `smax-postgres` will assume that the database to use has been fully set up, including a 'titles' table 
+(containing 2 columns: _text_ variable IDs, and auto-incremented integer _serial_ numbers). However, `smax-postgres` 
 can create the database and set up the required 'titles' table as needed (including indexing, and TimescaleDB 
 extension as appropriate), when launched  with the `-b` (or `--bootstrap`) option.
 
 ```bash
-  $ smaxLogger -c /usr/local/etc/smaxLogger/myconfig.cfg -b
+  $ smax-postgres -c /usr/local/etc/smax-postgres/myconfig.cfg -b
 ```
 
 Will log into the existing (new) database using the credentials specified in the configuration file 
-`/usr/local/etc/smaxLogger/myconfig.cfg`, then configures that database (e.g. set up the TimescaleSB extension as 
+`/usr/local/etc/smax-postgres/myconfig.cfg`, then configures that database (e.g. set up the TimescaleSB extension as 
 appropriate), and creates the 'titles' table and its index.
 
 You may also let the bootrapping process create the database itself, in which case you may have to provide the
@@ -95,13 +95,13 @@ password for the 'postgres' admin account, or the credentials for another accoun
 the necessary privileges to create databases. E.g.:
 
 ```bash
-  $ smaxLogger -c /usr/local/etc/myconfig.cfg -b -p "S3cur1ty!"
+  $ smax-postgres -c /usr/local/etc/myconfig.cfg -b -p "S3cur1ty!"
 ```
 
 will attempt create the database as the 'postgres' admin, whose password is 'S3cur1ty!', before proceeding to 
-configure the newly created database as the user designated for the `smaxLogger` program. (Alternatively, you may 
+configure the newly created database as the user designated for the `smax-postgres` program. (Alternatively, you may 
 use the `-a` and `-p` options together to create the database with another privileged user). The newly created 
-database will be automatically assigned to the designated `smaxLogger` user as its owner).
+database will be automatically assigned to the designated `smax-postgres` user as its owner).
 
 Once the database is configured, you will not need the `-b` option again (but it also will not wreck the previous
 initialization if accidentally used again after the initial setup).
@@ -153,8 +153,8 @@ Say the query returns the tid `192`, then the time-series for that variable will
 ## Configuration Reference
 
 See `cfg/example.cfg` as an example configuration file. Based on it may create your own configuration file, which 
-you can then load via the `-c` option to `smaxLogger` at startup. If using systemd integration, you may want to update 
-`/etc/systemd/system/smaxLogger.service` to load the configuration file from the location of your choice when the
+you can then load via the `-c` option to `smax-postgres` at startup. If using systemd integration, you may want to update 
+`/etc/systemd/system/smax-postgres.service` to load the configuration file from the location of your choice when the
 service is started via systemd.
 
 ### Database configuration options

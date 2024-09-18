@@ -28,7 +28,11 @@
  * The default is '3 days'
  *
  */
-#define TIMESCALE               "3 days"
+
+/// Default configuration file name
+#define SMAXPQ_DEFAULT_CONFIG   "/etc/smax-postgress.cfg"
+
+#define TIMESCALE               "3 days"  ///< Default TimescaleDB timescale
 
 #define IDLE_STATE              "IDLE"    ///< systemd state to report when idle.
 
@@ -37,10 +41,10 @@
 #define CONNECT_RETRY_SECONDS   60        ///< Seconds between trying to reconnect to server
 #define CONNECT_RETRY_ATTEMPTS  60        ///< Number of retry attempts before giving up....
 
-#define ERROR_EXIT              (-1)
+#define ERROR_EXIT              (-1)      ///< Exit code in case of an error
 
-#define ERROR_RETURN            (-1)
-#define SUCCESS_RETURN          0
+#define ERROR_RETURN            (-1)      ///< Function return value in case of an error
+#define SUCCESS_RETURN          0         ///< Function return value for successful completion
 
 #define MINUTE      60                ///< (s) seconds in a minute
 #define HOUR        ( 60 * MINUTE )   ///< (s) seconds in an hour
@@ -52,24 +56,65 @@
 #define DEFAULT_MAX_SIZE    1024      ///< (bytes) Default maximum binary data size of variables to log
 
 #ifndef TRUE
-#  define TRUE              1
+#  define TRUE              1         ///< Boolean TRUE (1) if not already defined
 #endif
 
 #ifndef FALSE
-#  define FALSE             0
+#  define FALSE             0         ///< Boolean FALSE (0) if not already defined
 #endif
 
-
+/// Macro for printing debug messages
 #define dprintf             if(debug) printf
+
+/// API major version
+#define SMAXPQ_MAJOR_VERSION  0
+
+/// API minor version
+#define SMAXPQ_MINOR_VERSION  9
+
+/// Integer sub version of the release
+#define SMAXPQ_PATCHLEVEL     0
+
+/// Additional release information in version, e.g. "-1", or "-rc1".
+#define SMAXPQ_RELEASE_STRING "-devel"
+
+/// \cond PRIVATE
+
+#ifdef str_2
+#  undef str_2
+#endif
+
+/// Stringify level 2 macro
+#define str_2(s) str_1(s)
+
+#ifdef str_1
+#  undef str_1
+#endif
+
+/// Stringify level 1 macro
+#define str_1(s) #s
+
+/// \endcond
+
+/// The version string for this library
+/// \hideinitializer
+#define SMAXPQ_VERSION_STRING str_2(SMAXPQ_MAJOR_VERSION) "." str_2(SMAXPQ_MINOR_VERSION) \
+                                  "." str_2(SMAXPQ_PATCHLEVEL) SMAXPQ_RELEASE_STRING
 
 extern boolean debug;             ///< whether to show debug messages
 
+/**
+ * A set of properties that determine how an SMA-X variable is logged into the PostgreSQL DB.
+ */
 typedef struct {
-  boolean force;                  /// Whether the variable should be logged no matter what other settings.
-  boolean exclude;                /// Whether to exclude this variable from logging
-  int sampling;                   /// sampling step for array data (sampling every n values only)
+  boolean force;                  ///< Whether the variable should be logged no matter what other settings.
+  boolean exclude;                ///< Whether to exclude this variable from logging
+  int sampling;                   ///< sampling step for array data (sampling every n values only)
 } logger_properties;
 
+/**
+ * Data for an SMA-X variable that is to be inserted into the PostgreSQL database
+ */
 typedef struct Variable {
   char *id;                       ///< SMA-X variable id
   XField field;                   ///< SMA-X field data
@@ -77,7 +122,7 @@ typedef struct Variable {
   time_t grabTime;                ///< (s) UNIX time when data was grabbed / or scheduled to be grabbed
   int sampling;                   ///< sampling step for array data (sampling every n values only)
   char *unit;                     ///< Physical unit name (if any)
-  struct Variable *next;
+  struct Variable *next;          ///< Pointer to the next Variable in the linked lisr, or NULL if no more
 } Variable;
 
 

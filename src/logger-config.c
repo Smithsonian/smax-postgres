@@ -7,7 +7,7 @@
  *  Configuration support for smaxLogger.
  */
 
-#define _GNU_SOURCE
+#define _GNU_SOURCE           ///< C source code standard
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -20,7 +20,7 @@
 #include <ctype.h>
 
 #include "smax.h"
-#include "smaxLogger.h"
+#include "smax-postgres.h"
 
 #define LOOKUP_INITIAL_CAPACITY   65536   ///< Initial hashtable capacity
 
@@ -465,7 +465,7 @@ const char *getSMAXServerAddress() {
 /**
  * Sets the SMA-X server address or IP.
  *
- * @param passwd    The host name or IP address of the SMA-X server
+ * @param addr      The host name or IP address of the SMA-X server
  * @return          0 if successful, or else -1 if the name is NULL (errno will be set to EINVAL)
  *
  * @sa getSMAXServerAddress()
@@ -496,7 +496,7 @@ const char *getSQLServerAddress() {
 /**
  * Sets the SQL server address or IP.
  *
- * @param passwd    The host name or IP address of the SQL server
+ * @param addr      The host name or IP address of the SQL server
  * @return          0 if successful, or else -1 if the name is NULL (errno will be set to EINVAL)
  *
  * @sa getSQLServerAddress()
@@ -528,7 +528,7 @@ const char *getSQLDatabaseName() {
 /**
  * Sets the SQL database name to select when connecting to the SQL server.
  *
- * @param passwd    The SQL database name
+ * @param name      The SQL database name
  * @return          0 if successful, or else -1 if the name is NULL (errno will be set to EINVAL)
  *
  * @sa getSQLDatabaseName()
@@ -560,7 +560,7 @@ const char *getSQLUserName() {
 /**
  * Sets the SQL user name to use when connecting to the database.
  *
- * @param passwd    The SQL database user name
+ * @param name      The SQL database user name
  * @return          0 if successful, or else -1 if the name is NULL (errno will be set to EINVAL)
  *
  * @sa getSQLUserName()
