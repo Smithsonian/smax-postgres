@@ -15,32 +15,44 @@
 <br clear="all">
 
 
-# Record SMA-X history in PostgreSQL / TimescaleDB
+# smax-postgres
+
+Record SMA-X history in PostgreSQL / TimescaleDB.
+
+ - [API documentation](https://smithsonian.github.io/smax-postgres/apidoc/html/files.html)
+ - [Project pages](https://smithsonian.github.io/smax-postgres) on github.io
+
+Author: Attila Kovacs
+
+Last Updated: 18 September 2024
+
+----------------------------------------------------------------------------------------------------------------------
+
+## Table of Contents
+
+ - [Instroduction](#introduction)
+ - [Prerequisites](#prerequisites)
+ - [Buildinh smax-postgres](#building)
+ - [Installation](#installation)
+ - [Database organization (for clients)](#database-organization)
+ - [Configuration reference](#configuration-reference)
+
+----------------------------------------------------------------------------------------------------------------------
+
+<a name="introduction"></a>
+## Introduction
 
 `smax-postgres` is a daemon application, which can collect data from an SMA-X realtime database and insert these into 
 a PostgreSQL database to create a time-series historical record for all or selected SMA-X variables. The program is
 highly customizable and supports both regular updates for changing variables as well as regular snapshots of all 
 selected SMA-X variables.
 
- - [API documentation](https://smithsonian.github.io/smax-postgres/apidoc/html/files.html)
- - [Project page](https://smithsonian.github.io/smax-postgres) on github.io
 
-----------------------------------------------------------------------------------------------------------------------
-
-## Table of Contents
-
-- [Prerequisites](#prerequisites)
-- [Buildinh smax-postgres](#building)
-- [Installation](#installation)
-- [Database organization (for clients)](#database-organization)
-- [Configuration reference](#configuration-reference)
-
-----------------------------------------------------------------------------------------------------------------------
 
 <a name="prerequisites"></a>
 ## Prerequisites
 
-The SMA-X C/C++ library has a build and runtime dependency on the following software:
+The `smax-potgres` application has a build and runtime dependency on the following software:
 
  - PostgreSQL installation and development files (`libpq.so` and `lipq.fe.h`).
  - [Smithsonian/clib](https://github.com/Smithsonian/smax-clib)
@@ -57,9 +69,6 @@ Additionally, to configure your SMA-X server, you will need the
 
 <a name="building"></a>
 ## Building smax-postgres
-
-The __smax-clib__ library can be built either as a shared (`libsmax.so[.1]`) and as a static (`libsmax.a`) library, 
-depending on what suits your needs best.
 
 You can configure the build, either by editing `config.mk` or else by defining the relevant environment variables 
 prior to invoking `make`. The following build variables can be configured:
@@ -99,10 +108,8 @@ prior to invoking `make`. The following build variables can be configured:
 
  - `CHECKEXTRA`: Extra options to pass to `cppcheck` for the `make check` target
  
-After configuring, you can simply run `make`, which will build the `shared` (`lib/libsmax.so[.1]`) and `static` 
-(`lib/libsmax.a`) libraries, local HTML documentation (provided `doxygen` is available), and performs static
-analysis via the `check` target. Or, you may build just the components you are interested in, by specifying the
-desired `make` target(s). (You can use `make help` to get a summary of the available `make` targets). 
+After configuring, you can simply run `make`, which will build `bin/smax-postgres`, and user documentation. You may 
+also build other `make` target(s). (You can use `make help` to get a summary of the available `make` targets). 
 
 Now you may compile `smax-postgres`:
 

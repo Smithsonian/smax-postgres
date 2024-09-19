@@ -34,12 +34,17 @@ else
   STAGE=$(DESTDIR)
 endif
 
+# For deployment, the app and documentation
+.PHONY: deploy
+deploy: app $(DOC_TARGETS)
+
+# Build just the app
+.PHONY: app
+app: $(BIN)/smax-postgres
+
 # Build everything...
 .PHONY: all
 all: deploy check
-
-.PHONY: deploy
-deploy: app $(DOC_TARGETS)
 
 # Remove intermediates
 .PHONY: clean
@@ -61,8 +66,7 @@ SOURCES = $(SRC)/smax-postgres.c $(SRC)/logger-config.c $(SRC)/postgres-backend.
 OBJECTS := $(subst $(SRC),$(OBJ),$(SOURCES))
 OBJECTS := $(subst .c,.o,$(OBJECTS))
 
-.PHONY: app
-app: $(BIN)/smax-postgres
+
 
 $(BIN)/smax-postgres: $(OBJECTS) | $(BIN)
 
