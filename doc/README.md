@@ -38,13 +38,13 @@ as well as regular snapshots of all selected SMA-X variables.
 
 The `smax-potgres` application has a build and runtime dependency on the following software:
 
- - PostgreSQL installation and development files (`libpq.so` and `lipq.fe.h`).
+ - __PostgreSQL__ installation and development files (`libpq.so` and `lipq.fe.h`).
  - [Smithsonian/smax-clib](https://github.com/Smithsonian/smax-clib)
  - [Smithsonian/redisx](https://github.com/Smithsonian/redisx)
  - [Smithsonian/xchange](https://github.com/Smithsonian/xchange)
- - `popt` development libraries (`libpopt-dev`in Debian, or `popt-devel` in RPM distros)
- - (_optional_) TimescaleDB extensions.
- - (_optional_) systemd development files (`libsystemd.so` and `sd-daemon.h`).
+ - __Popt__ development libraries (`libpopt-dev`in Debian, or `popt-devel` in RPM distros)
+ - (_optional_) __TimescaleDB__ extensions.
+ - (_optional_) __systemd__ development files (`libsystemd.so` and `sd-daemon.h`).
 
 Additionally, to configure your SMA-X server, you will need the 
 [Smithsonian/smax-server](https://github.com/Smithsonian/smax-server) repo also.
