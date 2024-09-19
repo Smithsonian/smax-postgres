@@ -4,7 +4,7 @@ excerpt: Record SMA-X history in PostgreSQL / TimescaleDB
 
 <img src="/smax-postgres/resources/CfA-logo.png" alt="CfA logo" width="400" height="67" align="right"><br clear="all">
 
-`smax-postgres` is a daemon application, which can collect data from an SMA-X realtime database and insert these into 
+__smax-postgres__ is a daemon application, which can collect data from an SMA-X realtime database and insert these into 
 a PostgreSQL database to create a time-series historical record for all or selected SMA-X variables. The program is
 highly customizable and supports both regular updates for changing variables as well as regular snapshots of all 
 selected SMA-X variables.
@@ -34,7 +34,7 @@ __Dependencies__
  - [Smithsonian/redisx](https://github.com/Smithsonian/redisx) -- A C/C++ Redis client library
  - [Smithsonian/xchange](https://github.com/Smithsonian/xchange) -- structured data exchange framework
  - [Smithsonian/smax-server](https://github.com/Smithsonian/smax-server) -- SMA-X server configuration kit
- - PostgreSQL development files (`libpq.so` and `lipq.fe.h`)
- - `popt` library development files (`libpopt.so` and `popt.h`)
- - (optional) `systemd` development files (`libsystemd.so` and `sd-daemon.h`)
+ - PostgreSQL development files (`libpq.so` and `lipq-fe.h`)
+ - __Popt__ (command-line options parsing) library development files (`libpopt.so` and `popt.h`)
+ - (optional) __systemd__ (runtime management) development files (`libsystemd.so` and `sd-daemon.h`)
  
