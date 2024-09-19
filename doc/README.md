@@ -1,6 +1,6 @@
 <img src="/smax-postgres/resources/CfA-logo.png" alt="CfA logo" width="400" height="67" align="right">
 <br clear="all">
-Record SMA-X history in PostgreSQL / TimescaleDB.
+Record [SMA-X](https://docs.google.com/document/d/1eYbWDClKkV7JnJxv4MxuNBNV47dFXuUWu7C4Ve_YTf0/edit?usp=sharing)  history in PostgreSQL / TimescaleDB.
 
  - [API documentation](https://smithsonian.github.io/smax-postgres/apidoc/html/files.html)
  - [Project pages](https://smithsonian.github.io/smax-postgres) on github.io
@@ -25,10 +25,11 @@ Last Updated: 18 September 2024
 <a name="introduction"></a>
 ## Introduction
 
-`smax-postgres` is a daemon application, which can collect data from an SMA-X realtime database and insert these into 
-a PostgreSQL database to create a time-series historical record for all or selected SMA-X variables. The program is
-highly customizable and supports both regular updates for changing variables as well as regular snapshots of all 
-selected SMA-X variables.
+`smax-postgres` is a daemon application, which can collect data from an 
+[SMA information eXchange (SMA-X)](https://docs.google.com/document/d/1eYbWDClKkV7JnJxv4MxuNBNV47dFXuUWu7C4Ve_YTf0/edit?usp=sharing) 
+realtime database and insert these into a PostgreSQL database to create a time-series historical record for all or 
+selected SMA-X variables. The program is highly customizable and supports both regular updates for changing variables 
+as well as regular snapshots of all selected SMA-X variables.
 
 
 
