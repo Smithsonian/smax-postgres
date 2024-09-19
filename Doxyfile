@@ -2466,7 +2466,7 @@ SKIP_FUNCTION_MACROS   = YES
 
 TAGFILES               = ../xchange/apidoc/xchange.tag=../../xchange/apidoc/html \
                          ../redisx/apidoc/redisx.tag=../../redisx/apidoc/html \
-                         ../smax/apidoc/smax.tag=../../smax/apidoc/html
+                         ../smax-clib/apidoc/smax.tag=../../smax-clib/apidoc/html
 
 # When a file name is specified after GENERATE_TAGFILE, doxygen will create a
 # tag file that is based on the input files it reads. See section "Linking to
