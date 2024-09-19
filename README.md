@@ -17,7 +17,7 @@
 
 # smax-postgres
 
-Record SMA-X history in PostgreSQL / TimescaleDB.
+Record [SMA-X](https://docs.google.com/document/d/1eYbWDClKkV7JnJxv4MxuNBNV47dFXuUWu7C4Ve_YTf0/edit?usp=sharing)  history in PostgreSQL / TimescaleDB.
 
  - [API documentation](https://smithsonian.github.io/smax-postgres/apidoc/html/files.html)
  - [Project pages](https://smithsonian.github.io/smax-postgres) on github.io
@@ -42,10 +42,11 @@ Last Updated: 18 September 2024
 <a name="introduction"></a>
 ## Introduction
 
-`smax-postgres` is a daemon application, which can collect data from an SMA-X realtime database and insert these into 
-a PostgreSQL database to create a time-series historical record for all or selected SMA-X variables. The program is
-highly customizable and supports both regular updates for changing variables as well as regular snapshots of all 
-selected SMA-X variables.
+`smax-postgres` is a daemon application, which can collect data from an 
+[SMA information eXchange (SMA-X)](https://docs.google.com/document/d/1eYbWDClKkV7JnJxv4MxuNBNV47dFXuUWu7C4Ve_YTf0/edit?usp=sharing) 
+realtime database and insert these into a __PostgreSQL__ database to create a time-series historical record for all or 
+selected SMA-X variables. The program is highly customizable and supports both regular updates for changing variables 
+as well as regular snapshots of all selected SMA-X variables.
 
 
 
@@ -54,13 +55,13 @@ selected SMA-X variables.
 
 The `smax-potgres` application has a build and runtime dependency on the following software:
 
- - PostgreSQL installation and development files (`libpq.so` and `lipq.fe.h`).
+ - __PostgreSQL__ installation and development files (`libpq.so` and `lipq.fe.h`).
  - [Smithsonian/smax-clib](https://github.com/Smithsonian/smax-clib)
  - [Smithsonian/redisx](https://github.com/Smithsonian/redisx)
  - [Smithsonian/xchange](https://github.com/Smithsonian/xchange)
- - `popt` development libraries (`libpopt-dev`in Debian, or `popt-devel` in RPM distros)
- - (_optional_) TimescaleDB extensions.
- - (_optional_) systemd development files (`libsystemd.so` and `sd-daemon.h`).
+ - __Popt__ development libraries (`libpopt-dev`in Debian, or `popt-devel` in RPM distros)
+ - (_optional_) __TimescaleDB__ extensions.
+ - (_optional_) __systemd__ development files (`libsystemd.so` and `sd-daemon.h`).
 
 Additionally, to configure your SMA-X server, you will need the 
 [Smithsonian/smax-server](https://github.com/Smithsonian/smax-server) repo also.
