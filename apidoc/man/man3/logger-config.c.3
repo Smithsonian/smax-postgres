@@ -1,0 +1,435 @@
+.TH "src/logger-config.c" 3 "Version v0.9" "smax-postgres" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/logger-config.c
+.SH SYNOPSIS
+.br
+.PP
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fB_GNU_SOURCE\fP"
+.br
+.RI "C source code standard\&. "
+.ti -1c
+.RI "#define \fBLOOKUP_INITIAL_CAPACITY\fP   65536"
+.br
+.RI "Initial hashtable capacity\&. "
+.ti -1c
+.RI "#define \fBMIN_AGE\fP   ( 1 * \fBDAY\fP )"
+.br
+.RI "(s) Provide slow updates for unchanging variable at least this long "
+.ti -1c
+.RI "#define \fBMIN_SIZE\fP   8"
+.br
+.RI "(bytes) Always log variable up to this size, no matter "
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBlogger_properties\fP * \fBgetLogProperties\fP (const char *id)"
+.br
+.ti -1c
+.RI "int \fBgetMaxLogSize\fP ()"
+.br
+.ti -1c
+.RI "int \fBgetSampleCount\fP (const \fBVariable\fP *u)"
+.br
+.ti -1c
+.RI "const char * \fBgetSMAXServerAddress\fP ()"
+.br
+.ti -1c
+.RI "int \fBgetSnapshotInterval\fP ()"
+.br
+.ti -1c
+.RI "const char * \fBgetSQLAuth\fP ()"
+.br
+.ti -1c
+.RI "const char * \fBgetSQLDatabaseName\fP ()"
+.br
+.ti -1c
+.RI "const char * \fBgetSQLServerAddress\fP ()"
+.br
+.ti -1c
+.RI "const char * \fBgetSQLUserName\fP ()"
+.br
+.ti -1c
+.RI "int \fBgetUpdateInterval\fP ()"
+.br
+.ti -1c
+.RI "\fBboolean\fP \fBisLogging\fP (const char *id, double updateTime)"
+.br
+.ti -1c
+.RI "\fBboolean\fP \fBisUseHyperTables\fP ()"
+.br
+.ti -1c
+.RI "int \fBparseConfig\fP (const char *filename)"
+.br
+.ti -1c
+.RI "int \fBsetSMAXServerAddress\fP (const char *addr)"
+.br
+.ti -1c
+.RI "int \fBsetSQLAuth\fP (const char *passwd)"
+.br
+.ti -1c
+.RI "int \fBsetSQLDatabaseName\fP (const char *name)"
+.br
+.ti -1c
+.RI "int \fBsetSQLServerAddress\fP (const char *addr)"
+.br
+.ti -1c
+.RI "int \fBsetSQLUserName\fP (const char *name)"
+.br
+.ti -1c
+.RI "void \fBsetUseHyperTables\fP (\fBboolean\fP value)"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+
+.PP
+\fBDate\fP
+.RS 4
+Created on Nov 1, 2023 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs
+.RE
+.PP
+Configuration support for smaxLogger\&. 
+.SH "Function Documentation"
+.PP 
+.SS "\fBlogger_properties\fP * getLogProperties (const char * id)"
+Returns the currently configured logging properties for an SMA-X variable\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIid\fP The aggregate name/ID of the SMA-X variable 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Pointer to the logging properties data structure, or NULL if there isn't one or if the id was NULL (errno will be set to EINVAL in case of the latter)\&. 
+.RE
+.PP
+
+.SS "int getMaxLogSize ()"
+Returns the maximum byte size for automatically logged variables, in their binary storage format\&. For variables that are sampled at some interval
+.PP
+\fBReturns\fP
+.RS 4
+(bytes) 
+.RE
+.PP
+
+.SS "int getSampleCount (const \fBVariable\fP * u)"
+Returns the number of samples that should be logged into the SQL database for a given SMA-X variable, which may be different from the element count of the variable by a configured downsampling factor\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIu\fP Pointer to the variable's data structure 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+the number of samples that should be stored in the SQL database, or 0 if the argument was NULL\&. 
+.RE
+.PP
+
+.PP
+References \fBVariable::field\fP, \fBVariable::sampling\fP, and \fBxGetFieldCount()\fP\&.
+.SS "const char * getSMAXServerAddress ()"
+Returns the SMA-X server host name or IP address\&.
+.PP
+\fBReturns\fP
+.RS 4
+the host name or IP address of the SMA-X server
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsetSMAXServerAddress()\fP 
+.RE
+.PP
+
+.PP
+References \fBSMAX_DEFAULT_HOSTNAME\fP\&.
+.SS "int getSnapshotInterval ()"
+Returns the currently configured snapshot interval\&. Snapshots will be taken in the regular update cycle, whenever the time since the last snapshot equals or exceeds the set interval\&. For example, if the update interval is '2m', and the snapshot interval is '11m', then snapshots will be generated at every 6th update cycle, that is at every 12 minutes\&.
+.PP
+\fBReturns\fP
+.RS 4
+(s) the currently configured snapshot interval\&. Values <=0 indicate that snapshots are disabled\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+getUpdateUniterval() 
+.RE
+.PP
+
+.SS "const char * getSQLAuth ()"
+Returns the SQL database password to use when connecting to the database\&.
+.PP
+\fBReturns\fP
+.RS 4
+The password to use for logging into the SQL database, or NULL to use passwordless login
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsetSQLAuth()\fP 
+.RE
+.PP
+
+.SS "const char * getSQLDatabaseName ()"
+Returns the SQL database to use when connecting to the database\&.
+.PP
+\fBReturns\fP
+.RS 4
+The database name to select for logging into the SQL server
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsetSQLDatabaseName()\fP 
+.RE
+.PP
+
+.PP
+References \fBDEFAULT_SQL_DB\fP\&.
+.SS "const char * getSQLServerAddress ()"
+Returns the SQL server host name or IP address\&.
+.PP
+\fBReturns\fP
+.RS 4
+the host name or IP address of the SQL server
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsetSQLServerAddress()\fP 
+.RE
+.PP
+
+.PP
+References \fBDEFAULT_SQL_SERVER\fP\&.
+.SS "const char * getSQLUserName ()"
+Returns the SQL user name to use when connecting to the database\&.
+.PP
+\fBReturns\fP
+.RS 4
+The username to use for logging into the SQL database
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsetSQLUserName()\fP 
+.RE
+.PP
+
+.PP
+References \fBDEFAULT_SQL_USER\fP\&.
+.SS "int getUpdateInterval ()"
+Returns the currently configured update interval\&.
+.PP
+\fBReturns\fP
+.RS 4
+(s) the currently configured snapshot interval\&. Values <=0 indicate that snapshots are disabled\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+getUpdateUniterval() 
+.RE
+.PP
+
+.SS "\fBboolean\fP isLogging (const char * id, double updateTime)"
+Checks if a given variable is to be logged into the SQL database
+.PP
+\fBParameters\fP
+.RS 4
+\fIid\fP The aggregate name/ID of the SMA-X variable 
+.br
+\fIupdateTime\fP (s) UNIX timestamp when the variable was last updated in the SMA-X database\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+TRUE (1) if the variable should be logged into the SQL database, or else FALSE (0) 
+.RE
+.PP
+
+.PP
+References \fBlogger_properties::exclude\fP, \fBFALSE\fP, \fBlogger_properties::force\fP, \fBgetLogProperties()\fP, \fBLOOKUP_INITIAL_CAPACITY\fP, and \fBTRUE\fP\&.
+.SS "\fBboolean\fP isUseHyperTables ()"
+Checks whether to use TimescaleDB hypertables\&. TimescaleDB is available for PostgreSQL only, so the setting will not affect other database backends\&.
+.PP
+\fBReturns\fP
+.RS 4
+TRUE (1) if to create hypertables for new variables, if possible, or else FALSE (0)\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsetUseHyperTables()\fP 
+.RE
+.PP
+
+.SS "int parseConfig (const char * filename)"
+Pases settings from a specified configuration file
+.PP
+\fBParameters\fP
+.RS 4
+\fIfilename\fP the file name / path of the configuration to load\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or else -1 (errno will indicate the type of error)\&. 
+.RE
+.PP
+
+.PP
+References \fBdprintf\fP, \fBFALSE\fP, \fBMIN_AGE\fP, \fBMIN_SIZE\fP, \fBMINUTE\fP, \fBsetSMAXServerAddress()\fP, \fBsetSQLAuth()\fP, \fBsetSQLDatabaseName()\fP, \fBsetSQLServerAddress()\fP, \fBsetSQLUserName()\fP, \fBTRUE\fP, and \fBX_SEP\fP\&.
+.SS "int setSMAXServerAddress (const char * addr)"
+Sets the SMA-X server address or IP\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIaddr\fP The host name or IP address of the SMA-X server 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or else -1 if the name is NULL (errno will be set to EINVAL)
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBgetSMAXServerAddress()\fP 
+.RE
+.PP
+
+.SS "int setSQLAuth (const char * passwd)"
+Sets the SQL database password to use when connecting to the database\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIpasswd\fP The SQL database password to use 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBgetSQLAuth()\fP 
+.PP
+\fBsetSQLDatabaseName()\fP 
+.PP
+\fBsetSQLUserName()\fP 
+.PP
+\fBsetSQLServerAddress()\fP 
+.RE
+.PP
+
+.SS "int setSQLDatabaseName (const char * name)"
+Sets the SQL database name to select when connecting to the SQL server\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIname\fP The SQL database name 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or else -1 if the name is NULL (errno will be set to EINVAL)
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBgetSQLDatabaseName()\fP 
+.PP
+\fBsetSQLUserName()\fP 
+.PP
+\fBsetSQLAuth()\fP 
+.PP
+\fBsetSQLServerAddress()\fP 
+.RE
+.PP
+
+.SS "int setSQLServerAddress (const char * addr)"
+Sets the SQL server address or IP\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIaddr\fP The host name or IP address of the SQL server 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or else -1 if the name is NULL (errno will be set to EINVAL)
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBgetSQLServerAddress()\fP 
+.PP
+\fBsetSQLDatabaseName()\fP 
+.PP
+\fBsetSQLUserName()\fP 
+.PP
+\fBsetSQLAuth()\fP 
+.RE
+.PP
+
+.SS "int setSQLUserName (const char * name)"
+Sets the SQL user name to use when connecting to the database\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIname\fP The SQL database user name 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or else -1 if the name is NULL (errno will be set to EINVAL)
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBgetSQLUserName()\fP 
+.PP
+\fBsetSQLDatabaseName()\fP 
+.PP
+\fBsetSQLAuth()\fP 
+.PP
+\fBsetSQLServerAddress()\fP 
+.RE
+.PP
+
+.SS "void setUseHyperTables (\fBboolean\fP value)"
+Sets whether to use TimescaleDB hypertables extension\&. TimescaleDB is available for PostgreSQL only, so the setting will not affect other database backends\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIvalue\fP TRUE (non-zero) to enable TimescaleDB hypertables\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBisUseHyperTables()\fP 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for smax-postgres from the source code\&.

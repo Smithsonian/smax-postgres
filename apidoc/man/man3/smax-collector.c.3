@@ -1,0 +1,88 @@
+.TH "src/smax-collector.c" 3 "Version v0.9" "smax-postgres" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/smax-collector.c
+.SH SYNOPSIS
+.br
+.PP
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fB_POSIX_C_SOURCE\fP   200809"
+.br
+.RI "For clock_gettime() "
+.ti -1c
+.RI "#define \fBCONNECT_ATTEMPTS\fP   20"
+.br
+.RI "Total number of reconnection attempts when initializing\&. "
+.ti -1c
+.RI "#define \fBCONNECT_RETRY_INTERVAL\fP   3"
+.br
+.RI "(sec) Time between reconnection attempts when initializing\&. "
+.ti -1c
+.RI "#define \fBREDIS_SCAN_COUNT\fP   100"
+.br
+.RI "Work-load count to use for \fBRedis\fP SCAN-type commands\&. "
+.ti -1c
+.RI "#define \fBSYSERR_RTN\fP   0x40"
+.br
+.RI "Exit code indicating not to restart in case of error\&. "
+.ti -1c
+.RI "#define \fBUPDATE_TIMEOUT\fP   10000"
+.br
+.RI "(ms) Timeout value for gathering queued SMA-X variables "
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBdestroyVariable\fP (\fBVariable\fP *u)"
+.br
+.ti -1c
+.RI "int \fBinitCollector\fP ()"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+
+.PP
+\fBDate\fP
+.RS 4
+Created on Mar 16, 2022 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs
+.RE
+.PP
+smaxLogger connector module that mines SMA-X for inserting select variables into a time-series database at regular intervals\&. 
+.SH "Function Documentation"
+.PP 
+.SS "void destroyVariable (\fBVariable\fP * u)"
+Destroys a variable, freeing up the memory it occupies\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIu\fP Pointer to the variable\&. 
+.RE
+.PP
+
+.PP
+References \fBVariable::field\fP, \fBVariable::id\fP, \fBXField::name\fP, and \fBXField::value\fP\&.
+.SS "int initCollector ()"
+Initializes the SMA-X collector\&. It connects to SMA-X and starts a grabber thread in the background, which will be pushing data to the time-series database at regular intervals\&.
+.PP
+\fBReturns\fP
+.RS 4
+X_SUCCESS (0) if successful or else an error code (<0)\&. 
+.RE
+.PP
+
+.PP
+References \fBCONNECT_ATTEMPTS\fP, \fBCONNECT_RETRY_INTERVAL\fP, \fBdprintf\fP, \fBERROR_RETURN\fP, \fBFALSE\fP, \fBgetSMAXServerAddress()\fP, \fBsmaxConnect()\fP, \fBsmaxSetPipelined()\fP, \fBsmaxSetResilient()\fP, \fBsmaxSetResilientExit()\fP, \fBSUCCESS_RETURN\fP, \fBTRUE\fP, and \fBX_NO_SERVICE\fP\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for smax-postgres from the source code\&.

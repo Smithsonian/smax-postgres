@@ -1,0 +1,90 @@
+.TH "include/sql-types.h" 3 "Version v0.9" "smax-postgres" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+include/sql-types.h
+.SH SYNOPSIS
+.br
+.PP
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fBSQL_BOOLEAN\fP   'BOOLEAN'"
+.br
+.RI "SQL type for a logical true/false value\&. "
+.ti -1c
+.RI "#define \fBSQL_DATE\fP   'TIMESTAMP'"
+.br
+.RI "SQL date type\&. "
+.ti -1c
+.RI "#define \fBSQL_DATE_FORMAT\fP   ''%F %H:%M:%S''"
+.br
+.RI "SQL date format\&. "
+.ti -1c
+.RI "#define \fBSQL_DOUBLE\fP   'DOUBLE PRECISION'"
+.br
+.RI "SQL type for single precision (32-bit) floating point value\&. "
+.ti -1c
+.RI "#define \fBSQL_FLOAT\fP   'REAL'"
+.br
+.RI "SQL type for single precision (32-bit) floating point value\&. "
+.ti -1c
+.RI "#define \fBSQL_INT16\fP   'SMALLINT'"
+.br
+.RI "SQL type for 16-bit integer\&. "
+.ti -1c
+.RI "#define \fBSQL_INT32\fP   'INTEGER'"
+.br
+.RI "SQL type for 32-bit integer\&. "
+.ti -1c
+.RI "#define \fBSQL_INT64\fP   'BIGINT'"
+.br
+.RI "SQL type for 64-bit integer\&. "
+.ti -1c
+.RI "#define \fBSQL_INT8\fP   'SMALLINT'"
+.br
+.RI "8-bit integer is not standard SQL type so bump to 16-bits "
+.ti -1c
+.RI "#define \fBSQL_LAST\fP(id)   'ORDER BY ' id ' DESC LIMIT 1'"
+.br
+.RI "SQL for selecting last entry\&. "
+.ti -1c
+.RI "#define \fBSQL_MAX_DOUBLE\fP   (1e100)"
+.br
+.RI "Alternatively use DBL_MIN / DBL_MAX from <float\&.h>\&.\&.\&. "
+.ti -1c
+.RI "#define \fBSQL_MIN_DOUBLE\fP   (1e\-100)"
+.br
+.RI "SQL does not like doubles with exponent above +- 307\&. "
+.ti -1c
+.RI "#define \fBSQL_SERIAL\fP   \fBSQL_INT32\fP ' NOT NULL UNIQUE'"
+.br
+.RI "SQL type for serial numbers\&. "
+.ti -1c
+.RI "#define \fBSQL_TEXT\fP   'VARCHAR'"
+.br
+.RI "SQL text type\&. "
+.ti -1c
+.RI "#define \fBSQL_VARNAME\fP   \fBSQL_TEXT\fP"
+.br
+.RI "SQL type for storing variable names\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+
+.PP
+\fBDate\fP
+.RS 4
+Created on Jan 15, 2024 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs
+.RE
+.PP
+Equivalent SQL data types across many common SQL flavors 
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for smax-postgres from the source code\&.

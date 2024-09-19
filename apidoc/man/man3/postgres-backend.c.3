@@ -1,0 +1,177 @@
+.TH "src/postgres-backend.c" 3 "Version v0.9" "smax-postgres" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/postgres-backend.c
+.SH SYNOPSIS
+.br
+.PP
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fB_GNU_SOURCE\fP"
+.br
+.RI "C source code standard\&. "
+.ti -1c
+.RI "#define \fBCOL_NAME_STEM\fP   'c'"
+.br
+.RI "prefix for array data columns "
+.ti -1c
+.RI "#define \fBDEFAULT_STRING_LEN\fP   16"
+.br
+.RI "(bytes) default initial size for variable-length strings "
+.ti -1c
+.RI "#define \fBFIX_SCALAR_DIMS\fP   0"
+.br
+.RI "Whether singled-element 1D data should be stored as scalars\&. "
+.ti -1c
+.RI "#define \fBMASTER_TABLE\fP   'titles'"
+.br
+.RI "table name in which to store variable name -> id pairings "
+.ti -1c
+.RI "#define \fBMETA_NAME_PATTERN\fP   \fBTABLE_NAME_PATTERN\fP '_meta'"
+.br
+.RI "pattern for metadata table names "
+.ti -1c
+.RI "#define \fBMETA_SERIAL_ID\fP   'serial'"
+.br
+.RI "column name/id for metadata serial numbers "
+.ti -1c
+.RI "#define \fBMETA_SHAPE_LEN\fP   \fBX_MAX_STRING_DIMS\fP"
+.br
+.RI "Maximum number of dimensions to store\&. "
+.ti -1c
+.RI "#define \fBMETA_UNIT_LEN\fP   32"
+.br
+.RI "Maximum size for sotring physical units\&. "
+.ti -1c
+.RI "#define \fBMIN_CMD_SIZE\fP   16384"
+.br
+.RI "(bytes) Initial size of the command buffer "
+.ti -1c
+.RI "#define \fBPOSTGRES\fP   1"
+.br
+.RI "Use PostgreSQL data types from \fBsql-types\&.h\fP\&. "
+.ti -1c
+.RI "#define \fBSQL_COL_NAME_LEN\fP   32"
+.br
+.RI "(bytes) Maximum length for column names "
+.ti -1c
+.RI "#define \fBSQL_SEP\fP   ', '"
+.br
+.RI "List separator\&. "
+.ti -1c
+.RI "#define \fBSQL_TABLE_NAME_LEN\fP   32"
+.br
+.RI "(bytes) Maximum length for table names "
+.ti -1c
+.RI "#define \fBSQL_TYPE_LEN\fP   64"
+.br
+.RI "(bytes) Maximum length of SQL data type names "
+.ti -1c
+.RI "#define \fBTABLE_NAME_PATTERN\fP   'var_%06d'"
+.br
+.RI "pattern for tables names that store data for variables "
+.ti -1c
+.RI "#define \fBVARNAME_ID\fP   'name'"
+.br
+.RI "column name/id for variable names "
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBdeleteVars\fP (const char *pattern)"
+.br
+.ti -1c
+.RI "int \fBinsertQueue\fP (\fBVariable\fP *u)"
+.br
+.ti -1c
+.RI "int \fBsetupDB\fP (const char *owner, const char *passwd)"
+.br
+.ti -1c
+.RI "void * \fBSQLThread\fP ()"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+
+.PP
+\fBDate\fP
+.RS 4
+Created on Nov 5, 2023 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs
+.RE
+.PP
+SQL backend module for smaxLogger\&. It supports most common SQL flavors\&. The specific SQL flavor to use can be selected via an appropriate compiler constant\&. 
+.SH "Function Documentation"
+.PP 
+.SS "int deleteVars (const char * pattern)"
+Deletes variables and metadata from the SQL DB, and removes them from the master table also\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIpattern\fP Glob variable name pattern 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The number of variables deleted from the SQL DB, or -1 if there was an error (errno will indicate the type of error)\&. 
+.RE
+.PP
+
+.PP
+References \fBMASTER_TABLE\fP\&.
+.SS "int insertQueue (\fBVariable\fP * u)"
+Add the variable to the queue for database insertion\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIu\fP Pointer to the variable data structure 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+SUCCESS_RETURN (0) if successful, or else ERROR_RETURN (-1; errno will indicate the type of error)\&. 
+.RE
+.PP
+
+.PP
+References \fBERROR_RETURN\fP, \fBVariable::next\fP, and \fBSUCCESS_RETURN\fP\&.
+.SS "int setupDB (const char * owner, const char * passwd)"
+Sets up (bootstraps) a clean new database
+.PP
+\fBParameters\fP
+.RS 4
+\fIowner\fP User that will own the database (it must have privileges for creating the database) 
+.br
+\fIpasswd\fP Password for oqner 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+SUUCCESS_RETURN if successful, or else ERROR_RETURN\&. 
+.RE
+.PP
+
+.PP
+References \fBIDLE_STATE\fP\&.
+.SS "void * SQLThread ()"
+The main processing thread, which pulls values from the queue and inserts them into the database asynchronously\&. It is started up by initialize();
+.PP
+\fBReturns\fP
+.RS 4
+NULL 
+.RE
+.PP
+
+.PP
+References \fBCONNECT_RETRY_ATTEMPTS\fP, \fBdestroyVariable()\fP, \fBERROR_EXIT\fP, \fBIDLE_STATE\fP, \fBMETA_NAME_PATTERN\fP, \fBVariable::next\fP, \fBSQL_TABLE_NAME_LEN\fP, \fBSUCCESS_RETURN\fP, and \fBTRUE\fP\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for smax-postgres from the source code\&.

@@ -1,0 +1,61 @@
+.TH "src/smax-postgres.c" 3 "Version v0.9" "smax-postgres" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/smax-postgres.c
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBmain\fP (int argc, const char *argv[])"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "\fBboolean\fP \fBdebug\fP = \fBFALSE\fP"
+.br
+.RI "whether to show debug messages "
+.in -1c
+.SH "Detailed Description"
+.PP 
+
+.PP
+\fBDate\fP
+.RS 4
+Created on Nov 5, 2023 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs
+.RE
+.PP
+Logging of SMA-X variables to a historical database, such as an SQL database\&. Cofiguration of the logger is possible via a designated configuration file, which can be specified at runtime via the -c option\&. 
+.SH "Function Documentation"
+.PP 
+.SS "int main (int argc, const char * argv[])"
+Main entry point of the \fCsmax-postgress\fP SMA-X to PostgreSQL / TimescaleDB connector application
+.PP
+\fBParameters\fP
+.RS 4
+\fIargc\fP Number of command-line arguments passed 
+.br
+\fIargv\fP An array of command-line argument strings 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 id the program exited normally, or else a non-zero exit code\&. 
+.RE
+.PP
+
+.PP
+References \fBdebug\fP, \fBERROR_EXIT\fP, \fBFALSE\fP, \fBinitCollector()\fP, \fBparseConfig()\fP, \fBsetupDB()\fP, \fBSMAXPQ_DEFAULT_CONFIG\fP, \fBSMAXPQ_VERSION_STRING\fP, \fBSQLThread()\fP, and \fBSUCCESS_RETURN\fP\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for smax-postgres from the source code\&.

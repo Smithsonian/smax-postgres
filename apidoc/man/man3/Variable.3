@@ -1,0 +1,49 @@
+.TH "Variable" 3 "Version v0.9" "smax-postgres" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Variable
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <smax\-postgres\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "\fBXField\fP \fBfield\fP"
+.br
+.RI "SMA-X field data\&. "
+.ti -1c
+.RI "time_t \fBgrabTime\fP"
+.br
+.RI "(s) UNIX time when data was grabbed / or scheduled to be grabbed "
+.ti -1c
+.RI "char * \fBid\fP"
+.br
+.RI "SMA-X variable id\&. "
+.ti -1c
+.RI "struct \fBVariable\fP * \fBnext\fP"
+.br
+.RI "Pointer to the next \fBVariable\fP in the linked lisr, or NULL if no more\&. "
+.ti -1c
+.RI "int \fBsampling\fP"
+.br
+.RI "sampling step for array data (sampling every n values only) "
+.ti -1c
+.RI "char * \fBunit\fP"
+.br
+.RI "Physical unit name (if any) "
+.ti -1c
+.RI "time_t \fBupdateTime\fP"
+.br
+.RI "(s) UNIX time when variable was last updated in SMA-X "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Data for an SMA-X variable that is to be inserted into the PostgreSQL database 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for smax-postgres from the source code\&.

@@ -1,0 +1,11 @@
+var searchData=
+[
+  ['setsmaxserveraddress_0',['setsmaxserveraddress',['../logger-config_8c.html#aeda5f2be8aeb789f4b674196796e205b',1,'setSMAXServerAddress(const char *addr):&#160;logger-config.c'],['../smax-postgres_8h.html#aeda5f2be8aeb789f4b674196796e205b',1,'setSMAXServerAddress(const char *addr):&#160;logger-config.c']]],
+  ['setsqlauth_1',['setsqlauth',['../logger-config_8c.html#ae87f4d4d95cc606f6b9facd4545124be',1,'setSQLAuth(const char *passwd):&#160;logger-config.c'],['../smax-postgres_8h.html#ae87f4d4d95cc606f6b9facd4545124be',1,'setSQLAuth(const char *passwd):&#160;logger-config.c']]],
+  ['setsqldatabasename_2',['setsqldatabasename',['../logger-config_8c.html#ad654e9f99a7b1644d12ae09f49d9c737',1,'setSQLDatabaseName(const char *name):&#160;logger-config.c'],['../smax-postgres_8h.html#ad654e9f99a7b1644d12ae09f49d9c737',1,'setSQLDatabaseName(const char *name):&#160;logger-config.c']]],
+  ['setsqlserveraddress_3',['setsqlserveraddress',['../logger-config_8c.html#a9370a4a7e789b3baebfcf37e4db294ad',1,'setSQLServerAddress(const char *addr):&#160;logger-config.c'],['../smax-postgres_8h.html#a9370a4a7e789b3baebfcf37e4db294ad',1,'setSQLServerAddress(const char *addr):&#160;logger-config.c']]],
+  ['setsqlusername_4',['setsqlusername',['../logger-config_8c.html#afd4d5d8d02bd0faa30ba78f34dbe2bcc',1,'setSQLUserName(const char *name):&#160;logger-config.c'],['../smax-postgres_8h.html#afd4d5d8d02bd0faa30ba78f34dbe2bcc',1,'setSQLUserName(const char *name):&#160;logger-config.c']]],
+  ['setupdb_5',['setupdb',['../postgres-backend_8c.html#ad9474a3c2d249dd04b74856c1de22c3b',1,'setupDB(const char *owner, const char *passwd):&#160;postgres-backend.c'],['../smax-postgres_8h.html#ab392ae8af09fe37a7b1c5e2e6ada19ef',1,'setupDB(const char *name, const char *passwd):&#160;postgres-backend.c']]],
+  ['setusehypertables_6',['setusehypertables',['../logger-config_8c.html#a10cef261ca70c71249a7688c0aaa579d',1,'setUseHyperTables(boolean value):&#160;logger-config.c'],['../smax-postgres_8h.html#a10cef261ca70c71249a7688c0aaa579d',1,'setUseHyperTables(boolean value):&#160;logger-config.c']]],
+  ['sqlthread_7',['sqlthread',['../postgres-backend_8c.html#a93da760281f358b2b08c434e030f2eb4',1,'SQLThread():&#160;postgres-backend.c'],['../smax-postgres_8h.html#a93da760281f358b2b08c434e030f2eb4',1,'SQLThread():&#160;postgres-backend.c']]]
+];

@@ -1,0 +1,33 @@
+.TH "logger_properties" 3 "Version v0.9" "smax-postgres" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+logger_properties
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <smax\-postgres\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "\fBboolean\fP \fBexclude\fP"
+.br
+.RI "Whether to exclude this variable from logging\&. "
+.ti -1c
+.RI "\fBboolean\fP \fBforce\fP"
+.br
+.RI "Whether the variable should be logged no matter what other settings\&. "
+.ti -1c
+.RI "int \fBsampling\fP"
+.br
+.RI "sampling step for array data (sampling every n values only) "
+.in -1c
+.SH "Detailed Description"
+.PP 
+A set of properties that determine how an SMA-X variable is logged into the PostgreSQL DB\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for smax-postgres from the source code\&.
