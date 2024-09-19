@@ -38,7 +38,7 @@ selected SMA-X variables.
 The `smax-potgres` application has a build and runtime dependency on the following software:
 
  - PostgreSQL installation and development files (`libpq.so` and `lipq.fe.h`).
- - [Smithsonian/clib](https://github.com/Smithsonian/smax-clib)
+ - [Smithsonian/smax-clib](https://github.com/Smithsonian/smax-clib)
  - [Smithsonian/redisx](https://github.com/Smithsonian/redisx)
  - [Smithsonian/xchange](https://github.com/Smithsonian/xchange)
  - `popt` development libraries (`libpopt-dev`in Debian, or `popt-devel` in RPM distros)
