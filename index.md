@@ -15,16 +15,6 @@ The __smax-postgres__ applications was created, and is maintained, by Attila Kov
 
 This site contains various online resources that support the library:
 
-__Dependencies__
-
- - [Smithsonian/smax-clib](https://github.com/Smithsonian/smax-clib) -- structured data exchange framework
- - [Smithsonian/redisx](https://github.com/Smithsonian/redisx) -- A C/C++ Redis client library
- - [Smithsonian/xchange](https://github.com/Smithsonian/xchange) -- structured data exchange framework
- - [Smithsonian/smax-server](https://github.com/Smithsonian/smax-server) -- SMA-X server configuration kit
- - PostgreSQL development files (`libpq.so` and `lipq.fe.h`)
- - `popt` library development files (`libpopt.so` and `popt.h`)
- - (optional) `systemd` development files (`libsystemd.so` and `sd-daemon.h`)
- 
 __Downloads__
 
  - [Releases](https://github.com/Smithsonian/smax-postgres/releases) from GitHub
@@ -38,5 +28,13 @@ __Documentation__
  - [Community Forum](https://github.com/Smithsonian/smax-postgres/discussions) &ndash; ask a question, provide feedback, or 
    check announcements.
 
+__Dependencies__
 
+ - [Smithsonian/smax-clib](https://github.com/Smithsonian/smax-clib) -- structured data exchange framework
+ - [Smithsonian/redisx](https://github.com/Smithsonian/redisx) -- A C/C++ Redis client library
+ - [Smithsonian/xchange](https://github.com/Smithsonian/xchange) -- structured data exchange framework
+ - [Smithsonian/smax-server](https://github.com/Smithsonian/smax-server) -- SMA-X server configuration kit
+ - PostgreSQL development files (`libpq.so` and `lipq.fe.h`)
+ - `popt` library development files (`libpopt.so` and `popt.h`)
+ - (optional) `systemd` development files (`libsystemd.so` and `sd-daemon.h`)
  
