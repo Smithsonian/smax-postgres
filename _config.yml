@@ -4,7 +4,7 @@ github_username: attipaci
 title: smax-clib
 description: Record SMA-X history in PostgreSQL / TimescaleDB.
 show_downloads: false
-#google_analytics: G-EMRD1TX0PD
+google_analytics: G-GMGK5XDS48
 url: "https://smithsonian.github.io"
 read_time: true
 titles_from_headings:
