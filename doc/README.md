@@ -27,7 +27,7 @@ Last Updated: 18 September 2024
 
 `smax-postgres` is a daemon application, which can collect data from an 
 [SMA information eXchange (SMA-X)](https://docs.google.com/document/d/1eYbWDClKkV7JnJxv4MxuNBNV47dFXuUWu7C4Ve_YTf0/edit?usp=sharing) 
-realtime database and insert these into a PostgreSQL database to create a time-series historical record for all or 
+realtime database and insert these into a __PostgreSQL__ database to create a time-series historical record for all or 
 selected SMA-X variables. The program is highly customizable and supports both regular updates for changing variables 
 as well as regular snapshots of all selected SMA-X variables.
 
