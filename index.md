@@ -24,7 +24,7 @@ __Documentation__
  - [User's guide](doc/README.md) (`README.md`)
  - [API Documentation](apidoc/html/files.html)
  - [History of changes](doc/CHANGELOG.md) (`CHANGELOG.md`)
- - [Issues](https://github.com/Smithsonian/smax-postgres/issues) affecting __smax-clib__ releases (past and/or present)
+ - [Issues](https://github.com/Smithsonian/smax-postgres/issues) affecting __smax-postgres__ releases (past and/or present)
  - [Community Forum](https://github.com/Smithsonian/smax-postgres/discussions) &ndash; ask a question, provide feedback, or 
    check announcements.
 
