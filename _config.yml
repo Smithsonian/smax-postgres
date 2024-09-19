@@ -1,7 +1,7 @@
 theme: jekyll-theme-Tactile
 author: Attila Kovacs
 github_username: attipaci
-title: smax-clib
+title: smax-postgres
 description: Record SMA-X history in PostgreSQL / TimescaleDB.
 show_downloads: false
 google_analytics: G-GMGK5XDS48
