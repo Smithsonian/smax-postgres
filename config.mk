@@ -1,6 +1,5 @@
 # ===========================================================================
-# Generic configuration options for building the RedisX library (both static 
-# and shared).
+# Generic configuration options for building smax-postgres
 #
 # You can include this snipplet in your Makefile also.
 # ============================================================================
@@ -58,6 +57,41 @@ CFLAGS ?= -Os -Wall -std=c99
 # Link against math libs (for e.g. isnan())
 LDFLAGS ?= -lm
 
+# cppcheck options for 'check' target
+CHECKOPTS ?= --enable=performance,warning,portability,style --language=c \
+            --error-exitcode=1 --std=c11 $(CHECKEXTRA)
+
+CHECKOPTS += --template='{file}({line}): {severity} ({id}): {message}' --inline-suppr
+
+# Exhaustive checking for newer cppcheck
+#CHECKOPTS += --check-level=exhaustive
+
+# Specific Doxygen to use if not the default one
+#DOXYGEN ?= /opt/bin/doxygen
+
+# ============================================================================
+# END of user config section. 
+#
+# Below are some generated constants based on the one that were set above
+# ============================================================================
+
+# Search the selected Postgres directory
+CPPFLAGS += -I$(PGDIR)/include
+LDFLAGS += -L$(PGDIR)/lib
+
+# Compiler and linker options etc.
+ifeq ($(BUILD_MODE),debug)
+	CFLAGS += -g -DDEBUG
+endif
+
+# Always link against dependencies
+LDFLAGS += -lm -lsmax -lredisx -lxchange -lpq
+
+ifeq ($(SYSTEMD),1) 
+  DFLAGS += -DUSE_SYSTEMD=1
+  LDFLAGS += -lsystemd
+endif
+
 # Compile and link against a specific PostgreSQL library (if defined)
 ifdef PGDIR
   CPPFLAGS += -I$(PGDIR)/include
@@ -86,40 +120,7 @@ ifdef XCHANGE
   LD_LIBRARY_PATH = $(XCHANGE)/lib:$(LD_LIBRARY_PATH)
 endif
 
-# Always link against the xchange lib.
-LDFLAGS += -lsmax -lredisx -lxchange -lpq
 
-# cppcheck options for 'check' target
-CHECKOPTS ?= --enable=performance,warning,portability,style --language=c \
-            --error-exitcode=1 --std=c11 $(CHECKEXTRA)
-
-CHECKOPTS += --template='{file}({line}): {severity} ({id}): {message}' --inline-suppr
-
-# Exhaustive checking for newer cppcheck
-#CHECKOPTS += --check-level=exhaustive
-
-# Specific Doxygen to use if not the default one
-#DOXYGEN ?= /opt/bin/doxygen
-
-# ============================================================================
-# END of user config section. 
-#
-# Below are some generated constants based on the one that were set above
-# ============================================================================
-
-# Search the selected Postgres directory
-CPPFLAGS += -I$(PGDIR)/include
-LDFLAGS += -L$(PGDIR)/lib
-
-# Compiler and linker options etc.
-ifeq ($(BUILD_MODE),debug)
-	CFLAGS += -g -DDEBUG
-endif
-
-ifeq ($(SYSTEMD),1) 
-  DFLAGS += -DUSE_SYSTEMD=1
-  LDFLAGS += -lsystemd
-endif
 
 # Search for files in the designated locations
 vpath %.h $(INC)
