@@ -10,7 +10,7 @@ SYSTEMD ?= 1
 
 # The PostgreSQL installation directory containing C headers and shared
 # libraries (libpq.so)
-PGDIR ?= /usr/pgsql-16
+#PGDIR ?= /usr/pgsql-16
 
 # Location under which the Smithsonian/xchange library is installed.
 # (I.e., the root directory under which there is an include/ directory
@@ -75,13 +75,22 @@ CHECKOPTS += --template='{file}({line}): {severity} ({id}): {message}' --inline-
 # Below are some generated constants based on the one that were set above
 # ============================================================================
 
-# Search the selected Postgres directory
-CPPFLAGS += -I$(PGDIR)/include
-LDFLAGS += -L$(PGDIR)/lib
+# Make sure we can locate the PostgreSQL headers / libraries
+ifdef PGDIR
+  # Search the selected Postgres directory
+  CPPFLAGS += -I$(PGDIR)/include
+  LDFLAGS += -L$(PGDIR)/lib
+else
+  # Check if libpq-fe.h is in unusual location (bloody Debian...)
+  $(shell test -e /usr/include/postgresql)
+  ifeq ($(.SHELLSTATUS),0)
+    CPPFLAGS += -I/usr/include/postgresql
+  endif
+endif
 
 # Compiler and linker options etc.
 ifeq ($(BUILD_MODE),debug)
-	CFLAGS += -g -DDEBUG
+  CFLAGS += -g -DDEBUG
 endif
 
 # Always link against dependencies
