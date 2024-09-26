@@ -36,7 +36,7 @@ as well as regular snapshots of all selected SMA-X variables.
 <a name="prerequisites"></a>
 ## Prerequisites
 
-The `smax-postgres` application has a build and runtime dependency on the following software:
+The `smax-postgres` application has build and runtime dependencies on the following software:
 
  - __PostgreSQL__ installation and development files (`libpq.so` and `lipq.fe.h`).
  - [Smithsonian/smax-clib](https://github.com/Smithsonian/smax-clib)
