@@ -91,9 +91,6 @@ prior to invoking `make`. The following build variables can be configured:
  - `SYSTEMD`: Sets whether to compile with `systemd` integration (needs `libsystemd.so` and `sd-daemon.h`). Default
    is 1 (enabled).
    
- - `SYSTEMD`: Sets whether to compile with `systemd` integration (needs `libsystemd.so` and `sd-daemon.h`). Default
-   is 1 (enabled).
-   
  - `CC`: The C compiler to use (default: `gcc`).
 
  - `CPPFLAGS`: C pre-processor flags, such as externally defined compiler constants.
