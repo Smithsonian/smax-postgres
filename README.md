@@ -74,7 +74,7 @@ Additionally, to configure your SMA-X server, you will need the
 You can configure the build, either by editing `config.mk` or else by defining the relevant environment variables 
 prior to invoking `make`. The following build variables can be configured:
 
- - `PGDIR`: Root directory of the PostgreSQL installation. Default is `/usr/pgsql-16`.
+ - `PGDIR`: Root directory of a specific PostgreSQL installation to build against (not set by default).
 
  - `XCHANGE`: the root of the location where the [Smithsonian/xchange](https://github.com/Smithsonian/xchange) library 
    is installed. It expects to find `xchange.h` under `$(XCHANGE)/include` and `libxchange.so` under `$(XCHANGE)/lib`
