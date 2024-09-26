@@ -29,7 +29,7 @@ var NAVTREE =
       [ "Table of Contents", "index.html#autotoc_md4", null ],
       [ "Introduction", "index.html#autotoc_md6", null ],
       [ "Prerequisites", "index.html#autotoc_md7", null ],
-      [ "Building smax-postgres", "index.html#autotoc_md9", null ],
+      [ "Building <tt>smax-postgres</tt>", "index.html#autotoc_md9", null ],
       [ "Installation", "index.html#autotoc_md11", [
         [ "Staging / advanced installation", "index.html#autotoc_md12", null ],
         [ "Standard error/output with systemd integration", "index.html#autotoc_md13", null ],

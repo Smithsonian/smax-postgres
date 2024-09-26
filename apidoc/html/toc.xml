@@ -2,7 +2,7 @@
     <topic label="Table of Contents" href="index.html#autotoc_md4"/>
     <topic label="Introduction" href="index.html#autotoc_md6"/>
     <topic label="Prerequisites" href="index.html#autotoc_md7"/>
-    <topic label="Building smax-postgres" href="index.html#autotoc_md9"/>
+    <topic label="Building &lt;tt&gt;smax-postgres&lt;/tt&gt;" href="index.html#autotoc_md9"/>
     <topic label="Installation" href="index.html#autotoc_md11">
       <topic label="Staging / advanced installation" href="index.html#autotoc_md12"/>
       <topic label="Standard error/output with systemd integration" href="index.html#autotoc_md13"/>

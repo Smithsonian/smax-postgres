@@ -13,9 +13,9 @@ Last Updated: 18 September 2024
 
 ## Table of Contents
 
- - [Instroduction](#introduction)
+ - [Introduction](#introduction)
  - [Prerequisites](#prerequisites)
- - [Buildinh smax-postgres](#building)
+ - [Building `smax-postgres`](#building)
  - [Installation](#installation)
  - [Database organization (for clients)](#database-organization)
  - [Configuration reference](#configuration-reference)
@@ -36,7 +36,7 @@ as well as regular snapshots of all selected SMA-X variables.
 <a name="prerequisites"></a>
 ## Prerequisites
 
-The `smax-potgres` application has a build and runtime dependency on the following software:
+The `smax-postgres` application has a build and runtime dependency on the following software:
 
  - __PostgreSQL__ installation and development files (`libpq.so` and `lipq.fe.h`).
  - [Smithsonian/smax-clib](https://github.com/Smithsonian/smax-clib)
@@ -52,7 +52,7 @@ Additionally, to configure your SMA-X server, you will need the
 ----------------------------------------------------------------------------------------------------------------------
 
 <a name="building"></a>
-## Building smax-postgres
+## Building `smax-postgres`
 
 You can configure the build, either by editing `config.mk` or else by defining the relevant environment variables 
 prior to invoking `make`. The following build variables can be configured:
