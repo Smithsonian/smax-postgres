@@ -5,7 +5,7 @@
     <topic label="Building &lt;tt&gt;smax-postgres&lt;/tt&gt;" href="index.html#autotoc_md9"/>
     <topic label="Installation" href="index.html#autotoc_md11">
       <topic label="Staging / advanced installation" href="index.html#autotoc_md12"/>
-      <topic label="Standard error/output with systemd integration" href="index.html#autotoc_md13"/>
+      <topic label="Standard error/output with SystemD integration" href="index.html#autotoc_md13"/>
       <topic label="Initial setup of the SQL database" href="index.html#autotoc_md14"/>
     <topic label="Database organization (for clients)" href="index.html#autotoc_md16"/>
     <topic label="Configuration Reference" href="index.html#autotoc_md18">

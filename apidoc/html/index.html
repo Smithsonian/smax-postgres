@@ -162,9 +162,9 @@ Building &lt;tt&gt;smax-postgres&lt;/tt&gt;</h2>
 <li><code>XCHANGE</code>: the root of the location where the <a href="https://github.com/Smithsonian/xchange">Smithsonian/xchange</a> library is installed. It expects to find <code><a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html">xchange.h</a></code> under <code>$(XCHANGE)/include</code> and <code>libxchange.so</code> under <code>$(XCHANGE)/lib</code> or else in the default <code>LD_LIBRARY_PATH</code>.</li>
 <li><code>REDISX</code>: the root of the location where the <a href="https://github.com/Smithsonian/redisx">Smithsonian/redisx</a> library is installed. It expects to find <code><a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html">redisx.h</a></code> under <code>$(REDISX)/include</code> and <code>libredisx.so</code> under <code>$(REDISX)/lib</code> or else in the default <code>LD_LIBRARY_PATH</code>.</li>
 <li><code>SMAXLIB</code>: the root of the location where the <a href="https://github.com/Smithsonian/smax-clib">Smithsonian/smax-clib</a> library is installed. It expects to find <code><a class="elRef" href="../../smax-clib/apidoc/html/smax_8h.html">smax.h</a></code> under <code>$(SMAXLIB)/include</code> and <code>libsmax.so</code> under <code>$(SMAXLIB)/lib</code> or else in the default <code>LD_LIBRARY_PATH</code>.</li>
-<li><code>SYSTEMD</code>: Sets whether to compile with <code>systemd</code> integration (needs <code>libsystemd.so</code> and <code>sd-daemon.h</code>). Default is 1 (enabled).</li>
+<li><code>SYSTEMD</code>: Sets whether to compile with SystemD integration (needs <code>libsystemd.so</code> and <code>sd-daemon.h</code>). Default is 1 (enabled).</li>
 <li><code>CC</code>: The C compiler to use (default: <code>gcc</code>).</li>
-<li><code>CPPFLAGS</code>: C pre-processor flags, such as externally defined compiler constants.</li>
+<li><code>CPPFLAGS</code>: C preprocessor flags, such as externally defined compiler constants.</li>
 <li><code>CFLAGS</code>: Flags to pass onto the C compiler (default: <code>-Os -Wall -std=c99</code>). Note, <code>-Iinclude</code> will be added automatically.</li>
 <li><code>LDFLAGS</code>: Extra linker flags (default: <em>not set</em>). Note, <code>-lm -pthread -lsmax -lredisx -lxchange -lpq -lpopt</code> will be added automatically.</li>
 <li><code>BUILD_MODE</code>: You can set it to <code>debug</code> to enable debugging features: it will initialize the global <code>xDebug</code> variable to <code>TRUE</code> and add <code>-g</code> to <code>CFLAGS</code>.</li>
@@ -177,22 +177,22 @@ Building &lt;tt&gt;smax-postgres&lt;/tt&gt;</h2>
 <p><a class="anchor" id="installation"></a> </p>
 <h2><a class="anchor" id="autotoc_md11"></a>
 Installation</h2>
-<p>Prior to installation, you should check that the postgresql service name is correct in <code>smax-postgres.service</code>, and edit it as necessary for your system configuration. You may also edit the <code>cfg/smax-postgres.cfg</code> now, or after it is installed.</p>
-<p>Provided the build was successful, you can install the executables, configuration files, and optionally the systemd unit files via:</p>
+<p>Prior to installation, you should check that the PostgreSQL service name is correct in <code>smax-postgres.service</code>, and edit it as necessary for your system configuration. You may also edit the <code>cfg/smax-postgres.cfg</code> now, or after it is installed.</p>
+<p>Provided the build was successful, you can install the executables, configuration files, and optionally the SystemD unit files via:</p>
 <div class="fragment"><div class="line">$ sudo make install</div>
-</div><!-- fragment --><p>(When installing at the SMA, you may want <code>make install-sma</code> instead, to install with SMA-specific configuration). In case of systemd integration you should also reload the systemd daemon so <code>smax-postgres.service</code> can be enabled and managed as desired:</p>
+</div><!-- fragment --><p>(When installing at the SMA, you may want <code>make install-sma</code> instead, to install with SMA-specific configuration). In case of SystemD integration you should also reload the SystemD daemon so <code>smax-postgres.service</code> can be enabled and managed as desired:</p>
 <div class="fragment"><div class="line">$ sudo systemd daemon-reload</div>
 </div><!-- fragment --><p>After that you can start the service as:</p>
 <div class="fragment"><div class="line">$ sudo systemd start smax-postgres</div>
 </div><!-- fragment --><h3><a class="anchor" id="autotoc_md12"></a>
 Staging / advanced installation</h3>
-<p>By default, <code>make install</code> will install the <code>smax-postgress</code> executable to <code>/usr/bin</code>, configuration under <code>/etc/</code>, systemd service unit under <code>/etc/systemd/system</code>, and documentation under <code>/usr/share/doc/smax-postgres/</code>. Instead of <code>/usr</code>, you may want to install into another destination, such as <code>/opt/</code> or <code>/usr/local</code>. You can do that by setting the <code>DESTDIR</code> environment prior to <code>make install</code>, e.g.:</p>
+<p>By default, <code>make install</code> will install the <code>smax-postgress</code> executable to <code>/usr/bin</code>, configuration under <code>/etc/</code>, SystemD service unit under <code>/etc/systemd/system</code>, and documentation under <code>/usr/share/doc/smax-postgres/</code>. Instead of <code>/usr</code>, you may want to install into another destination, such as <code>/opt/</code> or <code>/usr/local</code>. You can do that by setting the <code>DESTDIR</code> environment prior to <code>make install</code>, e.g.:</p>
 <div class="fragment"><div class="line">$ export DESTDIR=&quot;/opt&quot;</div>
 </div><!-- fragment --><p>Additionally, you can also stage the installation under a different root, by setting the <code>PREFIX</code> environment variable, e.g.:</p>
 <div class="fragment"><div class="line">$ export PREFIX=&quot;~/rmpbuild/BUILD/smax-postgres&quot;</div>
 </div><!-- fragment --><h3><a class="anchor" id="autotoc_md13"></a>
-Standard error/output with systemd integration</h3>
-<p>In case of systemd integration, errors will get logged to the journal, and can be investigated by <code>journalctl</code>. E.g. to see the errors in the last 3 hours, you may:</p>
+Standard error/output with SystemD integration</h3>
+<p>In case of SystemD integration, errors will get logged to the journal, and can be investigated by <code>journalctl</code>. E.g. to see the errors in the last 3 hours, you may:</p>
 <div class="fragment"><div class="line">$ journalctl -u smax-postgres --since &quot;3 hours ago&quot;</div>
 </div><!-- fragment --><p>Standard output is logged to the file <code>/var/log/smax-postgres.out</code> for the current session. Restarting <code>smax-postgres</code> will start a new file. (Because of buffering, there may be a long lag before you'll see stuff appear in this log file.)</p>
 <h3><a class="anchor" id="autotoc_md14"></a>
@@ -201,9 +201,9 @@ Initial setup of the SQL database</h3>
 <p>Normally <code>smax-postgres</code> will assume that the database to use has been fully set up, including a 'titles' table (containing 2 columns: <em>text</em> variable IDs, and auto-incremented integer <em>serial</em> numbers). However, <code>smax-postgres</code> can create the database and set up the required 'titles' table as needed (including indexing, and TimescaleDB extension as appropriate), when launched with the <code>-b</code> (or <code>--bootstrap</code>) option.</p>
 <div class="fragment"><div class="line">$ smax-postgres -c /usr/local/etc/smax-postgres/myconfig.cfg -b</div>
 </div><!-- fragment --><p>Will log into the existing (new) database using the credentials specified in the configuration file <code>/usr/local/etc/smax-postgres/myconfig.cfg</code>, then configures that database (e.g. set up the TimescaleSB extension as appropriate), and creates the 'titles' table and its index.</p>
-<p>You may also let the bootrapping process create the database itself, in which case you may have to provide the password for the 'postgres' admin account, or the credentials for another account with <code>CREATEDB</code> privileges with the necessary privileges to create databases. E.g.:</p>
+<p>You may also let the bootstrapping process create the database itself, in which case you may have to provide the password for the 'postgres' admin account, or the credentials for another account with <code>CREATEDB</code> privileges with the necessary privileges to create databases. E.g.:</p>
 <div class="fragment"><div class="line">$ smax-postgres -c /usr/local/etc/myconfig.cfg -b -p &quot;S3cur1ty!&quot;</div>
-</div><!-- fragment --><p>will attempt create the database as the 'postgres' admin, whose password is 'S3cur1ty!', before proceeding to configure the newly created database as the user designated for the <code>smax-postgres</code> program. (Alternatively, you may use the <code>-a</code> and <code>-p</code> options together to create the database with another privileged user). The newly created database will be automatically assigned to the designated <code>smax-postgres</code> user as its owner).</p>
+</div><!-- fragment --><p>will attempt create the database as the 'postgres' admin, before proceeding to configure the newly created database as the user designated for the <code>smax-postgres</code> program. (Alternatively, you may use the <code>-a</code> and <code>-p</code> options together to create the database with another privileged user). The newly created database will be automatically assigned to the designated <code>smax-postgres</code> user as its owner).</p>
 <p>Once the database is configured, you will not need the <code>-b</code> option again (but it also will not wreck the previous initialization if accidentally used again after the initial setup).</p>
 <hr  />
 <p><a class="anchor" id="database-organization"></a> </p>
@@ -220,7 +220,7 @@ Database organization (for clients)</h2>
 <p><a class="anchor" id="configuration-reference"></a> </p>
 <h2><a class="anchor" id="autotoc_md18"></a>
 Configuration Reference</h2>
-<p>See <code>cfg/example.cfg</code> as an example configuration file. Based on it may create your own configuration file, which you can then load via the <code>-c</code> option to <code>smax-postgres</code> at startup. If using systemd integration, you may want to update <code>/etc/systemd/system/smax-postgres.service</code> to load the configuration file from the location of your choice when the service is started via systemd.</p>
+<p>See <code>cfg/example.cfg</code> as an example configuration file. Based on it may create your own configuration file, which you can then load via the <code>-c</code> option to <code>smax-postgres</code> at startup. If using SystemD integration, you may want to update <code>/etc/systemd/system/smax-postgres.service</code> to load the configuration file from the location of your choice when the service is started via <code>systemd</code>.</p>
 <h3><a class="anchor" id="autotoc_md19"></a>
 Database configuration options</h3>
 <h4><a class="anchor" id="autotoc_md20"></a>

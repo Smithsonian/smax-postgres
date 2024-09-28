@@ -64,7 +64,7 @@ var searchData=
   ['sql_5fvarname_61',['SQL_VARNAME',['../sql-types_8h.html#a38c214280d608d14b3dd75d97700fc28',1,'sql-types.h']]],
   ['sqlthread_62',['sqlthread',['../postgres-backend_8c.html#a93da760281f358b2b08c434e030f2eb4',1,'SQLThread():&#160;postgres-backend.c'],['../smax-postgres_8h.html#a93da760281f358b2b08c434e030f2eb4',1,'SQLThread():&#160;postgres-backend.c']]],
   ['staging_20advanced_20installation_63',['Staging / advanced installation',['../index.html#autotoc_md12',1,'']]],
-  ['standard_20error_20output_20with_20systemd_20integration_64',['Standard error/output with systemd integration',['../index.html#autotoc_md13',1,'']]],
+  ['standard_20error_20output_20with_20systemd_20integration_64',['Standard error/output with SystemD integration',['../index.html#autotoc_md13',1,'']]],
   ['status_65',['status',['../../../smax-clib/apidoc/html/structXSyncPoint.html#a6e27f49150e9a14580fb313cc2777e00',1,'XSyncPoint::status'],['../../../smax-clib/apidoc/html/structXMeta.html#a6e27f49150e9a14580fb313cc2777e00',1,'XMeta::status']]],
   ['step_66',['step',['../../../smax-clib/apidoc/html/structXCoordinateAxis.html#a4736138d712d9ee570d0652f08a4786a',1,'XCoordinateAxis']]],
   ['storebytes_67',['storeBytes',['../../../smax-clib/apidoc/html/structXMeta.html#a766b48fdc93d03992939adfa91766703',1,'XMeta']]],
@@ -74,5 +74,5 @@ var searchData=
   ['subscription_71',['subscription',['../../../redisx/apidoc/html/structRedis.html#aa4878fb8cef61468ee8e7426a973a75c',1,'Redis']]],
   ['success_5freturn_72',['SUCCESS_RETURN',['../smax-postgres_8h.html#a9d047e610e7243c1ab517544e2829369',1,'smax-postgres.h']]],
   ['syserr_5frtn_73',['SYSERR_RTN',['../smax-collector_8c.html#a7a44c3c9007c4745bcab81ef41b4bb2d',1,'smax-collector.c']]],
-  ['systemd_20integration_74',['Standard error/output with systemd integration',['../index.html#autotoc_md13',1,'']]]
+  ['systemd_20integration_74',['Standard error/output with SystemD integration',['../index.html#autotoc_md13',1,'']]]
 ];

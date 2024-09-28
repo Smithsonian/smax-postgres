@@ -7,7 +7,7 @@ var searchData=
   ['initial_20setup_20of_20the_20sql_20database_4',['Initial setup of the SQL database',['../index.html#autotoc_md14',1,'']]],
   ['insertqueue_5',['insertqueue',['../postgres-backend_8c.html#a1e256e4f9e552e3411d6603250811ba4',1,'insertQueue(Variable *u):&#160;postgres-backend.c'],['../smax-postgres_8h.html#a1e256e4f9e552e3411d6603250811ba4',1,'insertQueue(Variable *u):&#160;postgres-backend.c']]],
   ['installation_6',['installation',['../index.html#autotoc_md11',1,'Installation'],['../index.html#autotoc_md12',1,'Staging / advanced installation']]],
-  ['integration_7',['Standard error/output with systemd integration',['../index.html#autotoc_md13',1,'']]],
+  ['integration_7',['Standard error/output with SystemD integration',['../index.html#autotoc_md13',1,'']]],
   ['interactive_8',['interactive',['../../../redisx/apidoc/html/structRedis.html#af51011d99955d6f036a9f2c291577749',1,'Redis']]],
   ['interval_20specification_9',['interval specification',['../index.html#autotoc_md27',1,'']]],
   ['interval_20tt_10',['interval tt',['../index.html#autotoc_md35',1,'&lt;tt&gt;max_age &lt;interval&gt;&lt;/tt&gt;'],['../index.html#autotoc_md28',1,'&lt;tt&gt;snapshot_interval &lt;interval&gt;&lt;/tt&gt;'],['../index.html#autotoc_md29',1,'&lt;tt&gt;update_interval &lt;interval&gt;&lt;/tt&gt;']]],
