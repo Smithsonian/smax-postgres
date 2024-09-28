@@ -88,12 +88,12 @@ prior to invoking `make`. The following build variables can be configured:
    library is installed. It expects to find `smax.h` under `$(SMAXLIB)/include` and `libsmax.so` under 
    `$(SMAXLIB)/lib` or else in the default `LD_LIBRARY_PATH`.
   
- - `SYSTEMD`: Sets whether to compile with `systemd` integration (needs `libsystemd.so` and `sd-daemon.h`). Default
+ - `SYSTEMD`: Sets whether to compile with SystemD integration (needs `libsystemd.so` and `sd-daemon.h`). Default
    is 1 (enabled).
    
  - `CC`: The C compiler to use (default: `gcc`).
 
- - `CPPFLAGS`: C pre-processor flags, such as externally defined compiler constants.
+ - `CPPFLAGS`: C preprocessor flags, such as externally defined compiler constants.
  
  - `CFLAGS`: Flags to pass onto the C compiler (default: `-Os -Wall -std=c99`). Note, `-Iinclude` will be added 
    automatically.
@@ -120,11 +120,11 @@ Now you may compile `smax-postgres`:
 <a name="installation"></a>
 ## Installation
 
-Prior to installation, you should check that the postgresql service name is correct in `smax-postgres.service`, and
+Prior to installation, you should check that the PostgreSQL service name is correct in `smax-postgres.service`, and
 edit it as necessary for your system configuration. You may also edit the `cfg/smax-postgres.cfg` now, or after it
 is installed.
 
-Provided the build was successful, you can install the executables, configuration files, and optionally the systemd 
+Provided the build was successful, you can install the executables, configuration files, and optionally the SystemD 
 unit files via:
 
 ```bash
@@ -132,7 +132,7 @@ unit files via:
 ```
 
 (When installing at the SMA, you may want `make install-sma` instead, to install with SMA-specific configuration).
-In case of systemd integration you should also reload the systemd daemon so `smax-postgres.service` can be enabled 
+In case of SystemD integration you should also reload the SystemD daemon so `smax-postgres.service` can be enabled 
 and managed as desired:
 
 ```bash
@@ -148,7 +148,7 @@ After that you can start the service as:
 ### Staging / advanced installation
 
 By default, `make install` will install the `smax-postgress` executable to `/usr/bin`, configuration under `/etc/`,
-systemd service unit under `/etc/systemd/system`, and documentation under `/usr/share/doc/smax-postgres/`. Instead of
+SystemD service unit under `/etc/systemd/system`, and documentation under `/usr/share/doc/smax-postgres/`. Instead of
 `/usr`, you may want to install into another destination, such as `/opt/` or `/usr/local`. You can do that by setting
 the `DESTDIR` environment prior to `make install`, e.g.:
 
@@ -163,9 +163,9 @@ e.g.:
   $ export PREFIX="~/rmpbuild/BUILD/smax-postgres"
 ```
 
-### Standard error/output with systemd integration
+### Standard error/output with SystemD integration
 
-In case of systemd integration, errors will get logged to the journal, and can be investigated by `journalctl`. E.g. to
+In case of SystemD integration, errors will get logged to the journal, and can be investigated by `journalctl`. E.g. to
 see the errors in the last 3 hours, you may:
 
 ```bash
@@ -184,7 +184,8 @@ want to create the database instance manually. You will need to create a user de
 and specify its credentials in the `smax-postgres` configuration file. This user will not require `CREATEDB` permission, 
 but it will need permission to create tables in the existing database and to insert data or to search the tables
 (i.e. read/write privileges). Additionally, you may also create the designated database instance assigned to whatever 
-user to own. If you create the database manually, do not forget to set the name of the designated database in the `smax-postgres` configuration file.
+user to own. If you create the database manually, do not forget to set the name of the designated database in the 
+`smax-postgres` configuration file.
 
 Normally `smax-postgres` will assume that the database to use has been fully set up, including a 'titles' table 
 (containing 2 columns: _text_ variable IDs, and auto-incremented integer _serial_ numbers). However, `smax-postgres` 
@@ -199,7 +200,7 @@ Will log into the existing (new) database using the credentials specified in the
 `/usr/local/etc/smax-postgres/myconfig.cfg`, then configures that database (e.g. set up the TimescaleSB extension as 
 appropriate), and creates the 'titles' table and its index.
 
-You may also let the bootrapping process create the database itself, in which case you may have to provide the
+You may also let the bootstrapping process create the database itself, in which case you may have to provide the
 password for the 'postgres' admin account, or the credentials for another account with `CREATEDB` privileges with 
 the necessary privileges to create databases. E.g.:
 
@@ -207,10 +208,10 @@ the necessary privileges to create databases. E.g.:
   $ smax-postgres -c /usr/local/etc/myconfig.cfg -b -p "S3cur1ty!"
 ```
 
-will attempt create the database as the 'postgres' admin, whose password is 'S3cur1ty!', before proceeding to 
-configure the newly created database as the user designated for the `smax-postgres` program. (Alternatively, you may 
-use the `-a` and `-p` options together to create the database with another privileged user). The newly created 
-database will be automatically assigned to the designated `smax-postgres` user as its owner).
+will attempt create the database as the 'postgres' admin with password 'S3curity!', before proceeding to configure the 
+newly created database as the user designated for the `smax-postgres` program. (Alternatively, you may use the `-a` and 
+`-p` options together to create the database with another privileged user). The newly created database will be 
+automatically assigned to the designated `smax-postgres` user as its owner).
 
 Once the database is configured, you will not need the `-b` option again (but it also will not wreck the previous
 initialization if accidentally used again after the initial setup).
@@ -262,9 +263,9 @@ Say the query returns the tid `192`, then the time-series for that variable will
 ## Configuration Reference
 
 See `cfg/example.cfg` as an example configuration file. Based on it may create your own configuration file, which 
-you can then load via the `-c` option to `smax-postgres` at startup. If using systemd integration, you may want to update 
+you can then load via the `-c` option to `smax-postgres` at startup. If using SystemD integration, you may want to update 
 `/etc/systemd/system/smax-postgres.service` to load the configuration file from the location of your choice when the
-service is started via systemd.
+service is started via `systemd`.
 
 ### Database configuration options
 
