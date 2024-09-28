@@ -167,7 +167,8 @@ want to create the database instance manually. You will need to create a user de
 and specify its credentials in the `smax-postgres` configuration file. This user will not require `CREATEDB` permission, 
 but it will need permission to create tables in the existing database and to insert data or to search the tables
 (i.e. read/write privileges). Additionally, you may also create the designated database instance assigned to whatever 
-user to own. If you create the database manually, do not forget to set the name of the designated database in the `smax-postgres` configuration file.
+user to own. If you create the database manually, do not forget to set the name of the designated database in the 
+`smax-postgres` configuration file.
 
 Normally `smax-postgres` will assume that the database to use has been fully set up, including a 'titles' table 
 (containing 2 columns: _text_ variable IDs, and auto-incremented integer _serial_ numbers). However, `smax-postgres` 
@@ -190,10 +191,10 @@ the necessary privileges to create databases. E.g.:
   $ smax-postgres -c /usr/local/etc/myconfig.cfg -b -p "S3cur1ty!"
 ```
 
-will attempt create the database as the 'postgres' admin, before proceeding to configure the newly created database as 
-the user designated for the `smax-postgres` program. (Alternatively, you may use the `-a` and `-p` options together to 
-create the database with another privileged user). The newly created database will be automatically assigned to the 
-designated `smax-postgres` user as its owner).
+will attempt create the database as the 'postgres' admin with password 'S3curity!', before proceeding to configure the 
+newly created database as the user designated for the `smax-postgres` program. (Alternatively, you may use the `-a` and 
+`-p` options together to create the database with another privileged user). The newly created database will be 
+automatically assigned to the designated `smax-postgres` user as its owner).
 
 Once the database is configured, you will not need the `-b` option again (but it also will not wreck the previous
 initialization if accidentally used again after the initial setup).
