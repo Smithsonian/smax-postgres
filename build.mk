@@ -64,7 +64,7 @@ dox: README.md Doxyfile | apidoc $(SRC) $(INC)
 
 # Automatic dependence on included header files.
 .PRECIOUS: dep/%.d
-dep/%.d: %.c dep
+dep/%.d: $(SRC)/%.c | dep
 	@echo " > $@" \
 	&& $(CC) $(CPPFLAGS) -MM -MG $< > $@.$$$$ \
 	&& sed 's|\w*\.o[ :]*| $(OBJ)/&|g' < $@.$$$$ > $@; \
