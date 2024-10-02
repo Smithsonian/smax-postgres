@@ -196,8 +196,14 @@ static boolean SubmitUpdate(Update *u) {
   }
 
   v = u->var;
-  m = &u->meta;
+  f = &v->field;
 
+  if(!f->value) {
+    errno = EINVAL;
+    return FALSE;
+  }
+
+  m = &u->meta;
   if(m->storeType == X_STRUCT) return FALSE;
 
   p = getLogProperties(v->id);
@@ -206,7 +212,6 @@ static boolean SubmitUpdate(Update *u) {
     force = p->force;
   }
 
-  f = &v->field;
   f->isSerialized = TRUE;
   f->type = m->storeType;
   f->ndim = m->storeDim;

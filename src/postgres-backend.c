@@ -560,6 +560,11 @@ static char *appendValues(const Variable *u, char *dst) {
   }
 
   f = &u->field;
+  if(!f->value) {
+    errno = EINVAL;
+    return dst;
+  }
+
   eSize = xElementSizeOf(f->type);
 
   if(u->sampling > 1) step = u->sampling;
