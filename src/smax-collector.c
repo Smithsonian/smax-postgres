@@ -302,7 +302,7 @@ static void DestroyList(Update *list) {
  *                      and was queued for update, or else an error code (<0).
  */
 static Update *QueueForUpdate(const char *id, const RedisEntry *units, int nu, const time_t grabTime) {
-  char *table, *key;
+  char *table, *key = NULL;
   int status = X_SUCCESS;
   Update *u;
   Variable *v;
@@ -346,6 +346,7 @@ static Update *QueueForUpdate(const char *id, const RedisEntry *units, int nu, c
     status = X_NAME_INVALID;
   }
 
+  v->field.name = xStringCopyOf(key);
   if(!status) status = smaxQueue(table, key, X_RAW, 1, &v->field.value, &u->meta);
   free(table);
 
