@@ -98,8 +98,8 @@ static int sqlConvertToHyperTable(int id);
 static int sqlCreateMetaTable(int id);
 static int sqlGetLastMeta(TableDescriptor *t);
 
-static int sqlExec(char *sql, PGresult **resp);
-static int sqlExecSimple(char *sql);
+static int sqlExec(const char *sql, PGresult **resp);
+static int sqlExecSimple(const char *sql);
 static int sqlConnect(const char *userName, const char *auth, const char *dbName);
 static void sqlDisconnect();
 static int sqlConnectRetry(int attempts);
@@ -1160,7 +1160,7 @@ static boolean isMetaUpdate(const Variable *u, const TableDescriptor *t) {
  *
  *  \return         TRUE (non-zero) on success, or FALSE (0) on error.
  */
-static int sqlExec(char *sql, PGresult **resp) {
+static int sqlExec(const char *sql, PGresult **resp) {
   if(!sql || !resp) {
     errno = EINVAL;
     return FALSE;
@@ -1190,7 +1190,7 @@ static int sqlExec(char *sql, PGresult **resp) {
  *
  *  \return         TRUE (non-zero) on success, or FALSE (0) on error.
  */
-static int sqlExecSimple(char *sql) {
+static int sqlExecSimple(const char *sql) {
   PGresult *reply = NULL;
   int success;
 
