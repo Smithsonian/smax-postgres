@@ -404,12 +404,14 @@ static int UpdateChanged(const char *pattern, double from, const time_t grabTime
 
   for(i=0; i<n; i++) {
     const RedisEntry *e = &entries[i];
+    double t;
+
     if(*e->key == '_') continue;
     if(*e->key == '<') continue;
 
-    char *tail;
-    double t = strtod(e->value, &tail);
-    if(tail == e->value || errno == ERANGE) {
+    errno = 0;
+    t = strtod(e->value, NULL);
+    if(errno) {
       dprintf("! Bad timestamp: [%s]\n", e->value);
       continue;
     }
