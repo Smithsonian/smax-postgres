@@ -63,15 +63,27 @@ jobs:
       with:
         repository: Smithsonian/smax-clib
         path: smax-clib
+
+    - name: Build xchange dependency
+      run: make -C xchange shared
     
     - name: Install xchange dependency
       run: sudo make -C xchange install
+
+    - name: Build RedisX dependency
+      run: make -C redisx shared
     
     - name: Install RedisX dependency
       run: sudo make -C redisx install
+
+    - name: Build smax-clib dependency
+      run: make -C smax-clib shared
     
     - name: Install smax-clib dependency
       run: sudo make -C smax-clib install
+
+    - name: Build smax-postgres distro
+      run: make distro
       
     - name: Install smax-postgres in default location
       run: sudo make install   

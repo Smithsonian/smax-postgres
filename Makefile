@@ -101,34 +101,39 @@ CONFIG := "cfg/smax-postgres.cfg"
 install-sma: CONFIG := "cfg/smax-postgres.cfg.sma"
 install-sma: install
 
-
 .PHONY: install
 install: install-bin install-cfg install-systemd install-doc
 
 .PHONY: install-bin
-install-bin: app
-	@echo "installing executable under $(bindir)."
+install-bin:
+ifneq ($(wildcard $(BIN)/*),)
+	@echo "installing executable(s) under $(bindir)."
 	@install -d $(bindir)
-	@install -m 755 $(BIN)/smax-postgres $(bindir)/
+	@install -m 755 -D $(BIN)/* $(bindir)/
+else
+	@echo "WARNING! Skipping bin install: needs 'app'"
+endif
 
 .PHONY: install-cfg
-	@if [ ! -e $(sysconfdir)/smax-postgres.cfg ] ; then \
-	  echo "installing configuration file under $(sysconfdir)." ; \
-	  install -d $(sysconfdir) ; \
-	  install -m 644 cfg/smax-postgres.cfg $(sysconfdir)/smax-postgres.cfg ; \
-	fi
+ifeq ($(wildcard $(sysconfdir)/smax-postgres.cfg),)
+	@echo "installing configuration file under $(sysconfdir)."
+	install -d $(sysconfdir)
+	install -m 644 cfg/smax-postgres.cfg $(sysconfdir)/smax-postgres.cfg
+else
+	@echo "WARNING! Will not override existing $(sysconfdir)/smax-postgres.cfg"
+endif
 
 .PHONY: install-systemd
 install-systemd:
-	@if [ $(SYSTEMD) -ne 0 ] ; then \
-	  echo "installing systemd unit file under $(systemddir)." ; \
-	  mkdir -p $(systemddir) ; \
-	  install -m 644 smax-postgres.service $(systemddir) ; \
-  	  sed -i "s:/usr/:$(prefix):g" $(systemddir)/smax-postgres.service ; \
-	fi
+ifneq ($(SYSTEMD), 0)
+	@echo "installing systemd unit file under $(systemddir)."
+	mkdir -p $(systemddir)
+	install -m 644 smax-postgres.service $(systemddir)/
+	sed -i "s:/usr/:$(prefix)/:g" $(systemddir)/smax-postgres.service
+endif
 
 .PHONY: install-doc
-install-doc: install-apidoc $(DOC_TARGETS)
+install-doc: install-apidoc
 	@echo "installing docs under $(docdir)."
 	@install -d $(docdir)
 	@install -m 644 LICENSE $(docdir)
@@ -136,14 +141,15 @@ install-doc: install-apidoc $(DOC_TARGETS)
 	@install -m 644 CHANGELOG.md $(docdir)
 
 .PHONY: install-apidoc
-install-apidoc: $(DOC_TARGETS)
-	@if [ -e apidoc/html/index.html ] ; then \
-	  echo "installing API docs under $(htmldir)." ; \
-	  install -d $(htmldir)/search ; \
-	  install -m 644 -D apidoc/html/* $(htmldir)/smax-postgres/ ; \
-	  install -m 644 -D apidoc/html/search/* $(htmldir)/search/ ; \
-	fi
-
+install-apidoc:
+ifneq ($(wildcard apidoc/html/search/*),)
+	@echo "installing API docs under $(htmldir)."
+	install -d $(htmldir)/search
+	install -m 644 -D apidoc/html/search/* $(htmldir)/search/
+	install -m 644 -D apidoc/html/*.* $(htmldir)/
+else
+	@echo "WARNING! Skipping apidoc install: needs doxygen and 'local-dox'"
+endif
 
 # Built-in help screen for `make help`
 .PHONY: help
