@@ -115,6 +115,19 @@ Now you may compile `smax-postgres`:
   $ make
 ```
 
+After building the library you can install the above components to the desired locations on your system. For a 
+system-wide install you may simply run:
+
+```bash
+  $ sudo make install
+```
+
+Or, to install in some other locations, you may set a prefix. For example to install under `/opt` instead, you can:
+
+```bash
+  $ sudo make prefix=/opt install
+```
+
 ----------------------------------------------------------------------------------------------------------------------
 
 <a name="installation"></a>

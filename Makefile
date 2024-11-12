@@ -28,15 +28,9 @@ else
   $(info WARNING! Doxygen is not available. Will skip 'dox' target) 
 endif
 
-ifdef PREFIX
-  STAGE=$(PREFIX)/$(DESTDIR)
-else
-  STAGE=$(DESTDIR)
-endif
-
 # For deployment, the app and documentation
-.PHONY: deploy
-deploy: app $(DOC_TARGETS)
+.PHONY: distro
+distro: app $(DOC_TARGETS)
 
 # Build just the app
 .PHONY: app
@@ -86,40 +80,70 @@ Doxyfile.local: Doxyfile Makefile
 local-dox: README-smax-postgres.md Doxyfile.local
 	doxygen Doxyfile.local
 
-CONFIG := "cfg/smax-postgres.cfg"
 
-.PHONY: install
-install: deploy
-	@echo "Installing under $(STAGE)."
-	
-	@mkdir -p $(STAGE)/bin
-	@install -m 755 $(BIN)/smax-postgres $(STAGE)/bin/
-	
-	@mkdir -p $(STAGE)/etc
-	@if [ ! -e $(PREFIX)/etc/smax-postgres.cfg ] ; then \
-	  install -m 644 cfg/smax-postgres.cfg $(PREFIX)/etc/smax-postgres.cfg ; \
-	fi
-	
-	@if [ $(SYSTEMD) -ne 0 ] ; then \
-	  mkdir -p $(STAGE)/etc/systemd/system ; \
-	  install -m 644 smax-postgres.service $(STAGE)/etc/systemd/system/ ; \
-  	  sed -i "s:/usr/:$(STAGE):g" $(STAGE)/etc/systemd/system/smax-postgres.service ; \
-	fi
-	
-	@mkdir -p $(STAGE)/share/doc/smax-postgres
-	@install -m 644 LICENSE $(STAGE)/share/doc/smax-postgres/
-	@install -m 644 README-smax-postgres.md $(STAGE)/share/doc/smax-postgres/README.md
-	@install -m 644 CHANGELOG.md $(STAGE)/share/doc/smax-postgres/
-	
-	@if [ -e apidoc/html/index.html ] ; then \
-	  mkdir -p $(STAGE)/share/doc/smax-postgres/html/search ; \
-	  install -m 644 -D apidoc/html/* $(STAGE)/share/doc/html/smax-postgres/ ; \
-	  install -m 644 -D apidoc/html/search/* $(STAGE)/share/doc/smax-postgres/html/search/ ; \
-	fi
+# Default values for install locations
+# See https://www.gnu.org/prep/standards/html_node/Directory-Variables.html 
+prefix ?= /usr
+exec_prefix ?= $(prefix)
+bindir ?= $(exec_prefix)/bin
+sysconfdir ?= $(prefix)/etc
+systemddir ?= $(sysconfdir)/systemd/system
+datarootdir ?= $(prefix)/share
+datadir ?= $(datarootdir)
+mydatadir ?= $(datadir)/smax-postgres
+docdir ?= $(datarootdir)/doc/smax-postgres
+htmldir ?= $(docdir)/html
+
+
+CONFIG := "cfg/smax-postgres.cfg"
 
 .PHONY: install-sma
 install-sma: CONFIG := "cfg/smax-postgres.cfg.sma"
 install-sma: install
+
+
+.PHONY: install
+install: install-bin install-cfg install-systemd install-doc
+
+.PHONY: install-bin
+install-bin: app
+	@echo "installing executable under $(bindir)."
+	@install -d $(bindir)
+	@install -m 755 $(BIN)/smax-postgres $(bindir)/
+
+.PHONY: install-cfg
+	@if [ ! -e $(sysconfdir)/smax-postgres.cfg ] ; then \
+	  echo "installing configuration file under $(sysconfdir)." ; \
+	  install -d $(sysconfdir) ; \
+	  install -m 644 cfg/smax-postgres.cfg $(sysconfdir)/smax-postgres.cfg ; \
+	fi
+
+.PHONY: install-systemd
+install-systemd:
+	@if [ $(SYSTEMD) -ne 0 ] ; then \
+	  echo "installing systemd unit file under $(systemddir)." ; \
+	  mkdir -p $(systemddir) ; \
+	  install -m 644 smax-postgres.service $(systemddir) ; \
+  	  sed -i "s:/usr/:$(prefix):g" $(systemddir)/smax-postgres.service ; \
+	fi
+
+.PHONY: install-doc
+install-doc: install-apidoc $(DOC_TARGETS)
+	@echo "installing docs under $(docdir)."
+	@install -d $(docdir)
+	@install -m 644 LICENSE $(docdir)
+	@install -m 644 README-smax-postgres.md $(docdir)/README.md
+	@install -m 644 CHANGELOG.md $(docdir)
+
+.PHONY: install-apidoc
+install-apidoc: $(DOC_TARGETS)
+	@if [ -e apidoc/html/index.html ] ; then \
+	  echo "installing API docs under $(htmldir)." ; \
+	  install -d $(htmldir)/search ; \
+	  install -m 644 -D apidoc/html/* $(htmldir)/smax-postgres/ ; \
+	  install -m 644 -D apidoc/html/search/* $(htmldir)/search/ ; \
+	fi
+
 
 # Built-in help screen for `make help`
 .PHONY: help
@@ -133,7 +157,7 @@ help:
 	@echo "  local-dox     Compiles local HTML API documentation using 'doxygen'."
 	@echo "  check         Performs static analysis with 'cppcheck'."
 	@echo "  all           All of the above."
-	@echo "  install       Install (may require sudo)"
+	@echo "  install       Install components (e.g. 'make prefix=<path> install')"
 	@echo "  install-sma   Install at the SMA (with sudo)"
 	@echo "  clean         Removes intermediate products."
 	@echo "  distclean     Deletes all generated files."
@@ -148,4 +172,4 @@ Makefile: config.mk build.mk
 
 include build.mk
 
-	
+

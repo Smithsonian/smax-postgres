@@ -1,0 +1,77 @@
+name: Test install
+
+on: 
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/**'
+      - 'include/**'
+      - 'tools/src/**'
+      - 'Makefile'
+      - '*.mk'
+      - '.github/workflows/install.yml'
+
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'include/**'
+      - 'tools/src/**'
+      - 'Makefile'
+      - '*.mk'
+      - '.github/workflows/install.yml'
+
+jobs:
+
+  install:
+    runs-on: ubuntu-latest
+    env:
+      CC: gcc
+      XCHANGE: ../xchange
+      REDISX: ../redisx
+      SMAXLIB: ../smax-clib
+    steps:
+    - name: install PostgreSQL
+      run: sudo apt-get install libpq-dev
+    
+    - name: install systemd development files
+      run: sudo apt-get install libsystemd-dev
+   
+    - name: install popt development files
+      run: sudo apt-get install libpopt-dev
+    
+    - name: install doxygen
+      run: sudo apt-get install doxygen
+
+    - name: Check out smax-clib 
+      uses: actions/checkout@v4
+      
+    - name: Check out xchange 
+      uses: actions/checkout@v4
+      with:
+        repository: Smithsonian/xchange
+        path: xchange
+        
+    - name: Check out RedisX
+      uses: actions/checkout@v4
+      with:
+        repository: Smithsonian/redisx
+        path: redisx
+    
+    - name: Check out smax-clib
+      uses: actions/checkout@v4
+      with:
+        repository: Smithsonian/smax-clib
+        path: smax-clib
+    
+    - name: Install xchange dependency
+      run: sudo make -C xchange install
+    
+    - name: Install RedisX dependency
+      run: sudo make -C redisx install
+    
+    - name: Install smax-clib dependency
+      run: sudo make -C smax-clib install
+      
+    - name: Install smax-postgres in default location
+      run: sudo make install   
