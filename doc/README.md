@@ -57,19 +57,8 @@ Additionally, to configure your SMA-X server, you will need the
 You can configure the build, either by editing `config.mk` or else by defining the relevant environment variables 
 prior to invoking `make`. The following build variables can be configured:
 
- - `PGDIR`: Root directory of a specific PostgreSQL installation to build against (not set by default).
-
- - `XCHANGE`: the root of the location where the [Smithsonian/xchange](https://github.com/Smithsonian/xchange) library 
-   is installed. It expects to find `xchange.h` under `$(XCHANGE)/include` and `libxchange.so` under `$(XCHANGE)/lib`
-   or else in the default `LD_LIBRARY_PATH`.
-   
- - `REDISX`: the root of the location where the [Smithsonian/redisx](https://github.com/Smithsonian/redisx) library 
-   is installed. It expects to find `redisx.h` under `$(REDISX)/include` and `libredisx.so` under `$(REDISX)/lib`
-   or else in the default `LD_LIBRARY_PATH`.
-   
- - `SMAXLIB`: the root of the location where the [Smithsonian/smax-clib](https://github.com/Smithsonian/smax-clib) 
-   library is installed. It expects to find `smax.h` under `$(SMAXLIB)/include` and `libsmax.so` under 
-   `$(SMAXLIB)/lib` or else in the default `LD_LIBRARY_PATH`.
+ - `PGDIR`: Root directory of a specific PostgreSQL installation to build against (not set by default). If not set
+   we'll build against the default PostgreSQL available on your system.
   
  - `SYSTEMD`: Sets whether to compile with SystemD integration (needs `libsystemd.so` and `sd-daemon.h`). Default
    is 1 (enabled).
@@ -89,6 +78,21 @@ prior to invoking `make`. The following build variables can be configured:
 
  - `CHECKEXTRA`: Extra options to pass to `cppcheck` for the `make check` target
  
+ - `XCHANGE`: If the [Smithsonian/xchange](https://github.com/Smithsonian/xchange) library is not installed on your
+   system (e.g. under `/usr`) set `XCHANGE` to where the distribution can be found. The build will expect to find 
+   `xchange.h` under `$(XCHANGE)/include` and `libxchange.so` / `libxchange.a` under `$(XCHANGE)/lib` or else in the 
+   default `LD_LIBRARY_PATH`.
+ 
+ - `REDISX`: If the [Smithsonian/redisx](https://github.com/Smithsonian/redisx) library is not installed on your
+   system (e.g. under `/usr`) set `REDISX` to where the distribution can be found. The build will expect to find 
+   `redisx.h` under `$(REDISX)/include` and `libredisx.so` / `libredisx.a` under `$(REDISX)/lib` or else in the 
+   default `LD_LIBRARY_PATH`.
+   
+ - `SMAXLIB`: If the [Smithsonian/smax-clib](https://github.com/Smithsonian/smax-clib) library is not installed on 
+   your system (e.g. under `/usr`) set `SMAXLIB` to where the distribution can be found. The build will expect to find 
+   `smax.h` under `$(SMAXLIB)/include` and `libsmax.so` / `libsmax.a` under `$(SMAXLIB)/lib` or else in the default 
+   `LD_LIBRARY_PATH`.
+ 
 After configuring, you can simply run `make`, which will build `bin/smax-postgres`, and user documentation. You may 
 also build other `make` target(s). (You can use `make help` to get a summary of the available `make` targets). 
 
@@ -96,6 +100,19 @@ Now you may compile `smax-postgres`:
 
 ```bash
   $ make
+```
+
+After building the library you can install the above components to the desired locations on your system. For a 
+system-wide install you may simply run:
+
+```bash
+  $ sudo make install
+```
+
+Or, to install in some other locations, you may set a prefix. For example to install under `/opt` instead, you can:
+
+```bash
+  $ sudo make prefix=/opt install
 ```
 
 ----------------------------------------------------------------------------------------------------------------------
