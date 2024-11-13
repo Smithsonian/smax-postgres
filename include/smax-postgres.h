@@ -10,7 +10,7 @@
 #ifndef SMAXLOGGER_H_
 #define SMAXLOGGER_H_
 
-#include "xchange.h"
+#include <xchange.h>
 
 #define DEFAULT_SQL_SERVER    "localhost"     ///< The default host name / IP of the SQL server
 #define DEFAULT_SQL_DB        "engdb"         ///< The default SQL database name to log to
