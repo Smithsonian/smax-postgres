@@ -94,6 +94,9 @@ mydatadir ?= $(datadir)/smax-postgres
 docdir ?= $(datarootdir)/doc/smax-postgres
 htmldir ?= $(docdir)/html
 
+# Standard install commands
+INSTALL_PROGRAM ?= install
+INSTALL_DATA ?= install -m 644
 
 CONFIG := "cfg/smax-postgres.cfg"
 
@@ -107,46 +110,46 @@ install: install-bin install-cfg install-systemd install-doc
 .PHONY: install-bin
 install-bin:
 ifneq ($(wildcard $(BIN)/*),)
-	@echo "installing executable(s) under $(bindir)."
-	@install -d $(bindir)
-	@install -m 755 -D $(BIN)/* $(bindir)/
+	@echo "installing executable(s) under $(DESTDIR)$(bindir)."
+	install -d $(DESTDIR)$(bindir)
+	$(INSTALL_PROGRAM) -D $(BIN)/* $(DESTDIR)$(bindir)/
 else
 	@echo "WARNING! Skipping bin install: needs 'app'"
 endif
 
 .PHONY: install-cfg
-ifeq ($(wildcard $(sysconfdir)/smax-postgres.cfg),)
-	@echo "installing configuration file under $(sysconfdir)."
-	install -d $(sysconfdir)
-	install -m 644 cfg/smax-postgres.cfg $(sysconfdir)/smax-postgres.cfg
+ifeq ($(wildcard $(DESTDIR)$(sysconfdir)/smax-postgres.cfg),)
+	@echo "installing configuration file under $(DESTDIR)$(sysconfdir)."
+	install -d $(DESTDIR)$(sysconfdir)
+	$(INSTALL_DATA) cfg/smax-postgres.cfg $(DESTDIR)$(sysconfdir)/smax-postgres.cfg
 else
-	@echo "WARNING! Will not override existing $(sysconfdir)/smax-postgres.cfg"
+	@echo "WARNING! Will not override existing $(DESTDIR)$(sysconfdir)/smax-postgres.cfg"
 endif
 
 .PHONY: install-systemd
 install-systemd:
 ifneq ($(SYSTEMD), 0)
-	@echo "installing systemd unit file under $(systemddir)."
-	mkdir -p $(systemddir)
-	install -m 644 smax-postgres.service $(systemddir)/
-	sed -i "s:/usr/:$(prefix)/:g" $(systemddir)/smax-postgres.service
+	@echo "installing systemd unit file under $(DESTDIR)$(systemddir)."
+	mkdir -p $(DESTDIR)$(systemddir)
+	$(INSTALL_DATA) smax-postgres.service $(DESTDIR)$(systemddir)/
+	sed -i "s:/usr/:$(prefix)/:g" $(DESTDIR)$(systemddir)/smax-postgres.service
 endif
 
 .PHONY: install-doc
 install-doc: install-apidoc
-	@echo "installing docs under $(docdir)."
-	@install -d $(docdir)
-	@install -m 644 LICENSE $(docdir)
-	@install -m 644 README-smax-postgres.md $(docdir)/README.md
-	@install -m 644 CHANGELOG.md $(docdir)
+	@echo "installing docs under $(DESTDIR)$(docdir)."
+	@install -d $(DESTDIR)$(docdir)
+	$(INSTALL_DATA) LICENSE $(DESTDIR)$(docdir)
+	$(INSTALL_DATA) README-smax-postgres.md $(DESTDIR)$(docdir)/README.md
+	$(INSTALL_DATA) CHANGELOG.md $(DESTDIR)$(docdir)
 
 .PHONY: install-apidoc
 install-apidoc:
 ifneq ($(wildcard apidoc/html/search/*),)
-	@echo "installing API docs under $(htmldir)."
-	install -d $(htmldir)/search
-	install -m 644 -D apidoc/html/search/* $(htmldir)/search/
-	install -m 644 -D apidoc/html/*.* $(htmldir)/
+	@echo "installing API docs under $(DESTDIR)$(htmldir)."
+	install -d $(DESTDIR)$(htmldir)/search
+	$(INSTALL_DATA) -D apidoc/html/search/* $(DESTDIR)$(htmldir)/search/
+	$(INSTALL_DATA) -D apidoc/html/*.* $(DESTDIR)$(htmldir)/
 else
 	@echo "WARNING! Skipping apidoc install: needs doxygen and 'local-dox'"
 endif
