@@ -90,6 +90,7 @@ sysconfdir ?= $(prefix)/etc
 systemddir ?= $(sysconfdir)/systemd/system
 datarootdir ?= $(prefix)/share
 datadir ?= $(datarootdir)
+mandir ?= $(datarootdir)/man
 mydatadir ?= $(datadir)/smax-postgres
 docdir ?= $(datarootdir)/doc/smax-postgres
 htmldir ?= $(docdir)/html
@@ -105,7 +106,7 @@ install-sma: CONFIG := "cfg/smax-postgres.cfg.sma"
 install-sma: install
 
 .PHONY: install
-install: install-bin install-cfg install-systemd install-doc
+install: install-bin install-man install-cfg install-systemd install-doc
 
 .PHONY: install-bin
 install-bin:
@@ -116,6 +117,12 @@ ifneq ($(wildcard $(BIN)/*),)
 else
 	@echo "WARNING! Skipping bin install: needs 'app'"
 endif
+
+.PHONY: install-man
+install-man:
+	@echo "installing man pages under $(DESTDIR)$(mandir)."
+	@install -d $(DESTDIR)$(mandir)/man1
+	$(INSTALL_DATA) -D man/man1/* $(DESTDIR)$(mandir)/man1/
 
 .PHONY: install-cfg
 ifeq ($(wildcard $(DESTDIR)$(sysconfdir)/smax-postgres.cfg),)
