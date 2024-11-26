@@ -1,6 +1,7 @@
 <img src="/smax-postgres/resources/CfA-logo.png" alt="CfA logo" width="400" height="67" align="right">
 <br clear="all">
-Record [SMA-X](https://docs.google.com/document/d/1eYbWDClKkV7JnJxv4MxuNBNV47dFXuUWu7C4Ve_YTf0/edit?usp=sharing)  history in PostgreSQL / TimescaleDB.
+Record [SMA-X](https://docs.google.com/document/d/1eYbWDClKkV7JnJxv4MxuNBNV47dFXuUWu7C4Ve_YTf0/edit?usp=sharing) 
+history in PostgreSQL / TimescaleDB. It is free to use, in any way you like, without licensing restrictions.
 
  - [API documentation](https://smithsonian.github.io/smax-postgres/apidoc/html/files.html)
  - [Project pages](https://smithsonian.github.io/smax-postgres) on github.io
@@ -109,10 +110,17 @@ system-wide install you may simply run:
   $ sudo make install
 ```
 
-Or, to install in some other locations, you may set a prefix. For example to install under `/opt` instead, you can:
+Or, to install in some other locations, you may set a prefix and/or `DESTDIR`. For example, to install under `/opt` 
+instead, you can:
 
 ```bash
-  $ sudo make prefix=/opt install
+  $ sudo make prefix="/opt" install
+```
+
+Or, to stage the installation (to `/usr`) under a 'build root':
+
+```bash
+  $ make DESTDIR="/tmp/stage" install
 ```
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -349,17 +357,14 @@ Specifies a variable or a glob pattern of variables that are to be excluded from
 `include` or `exclude` statement, which pertains to it, will decide whether or not to log that given variable. 
 Variables that are configured with an `always` directive will be logged to the SQL database regardless of any 
 exclusions that may have been specified, either before or after. By default all metadata variables (ones whose name 
-begin with `<`) and all temporary variable (whose names begin with an underscore `_`) are excluded from logging, 
+begin with `<`) and all temporary variables (whose names begin with an underscore `_`) are excluded from logging, 
 unless they are explicitly re-included.
 
 #### `include <pattern>`
 
-Specifies a variable or a glob pattern of variables that are to be excluded from logging to the SQL database. 
+Specifies a variable or a glob pattern of variables that are to be included for logging to the SQL database. 
 `exclude` and `include` directives take effect in the order they were specified, so for a given variable only the last 
 `include` or `exclude` statement, which pertains to it, will decide whether or not to log that given variable. 
-Variables that are configured with an `always` directive will be logged to the SQL database regardless of any 
-exclusions that may have been specified, either before or after. By default, all SMA-X variables are included in the 
-logging, except for the metadata and temporary data that are excluded by default (see `exclude`).
 
 
 #### `max_age <interval>`
@@ -380,7 +385,7 @@ regardless of their storage requirements.
 Log sparse samples of data for a variable or a glob pattern of variables. In some cases you may store large arrays in 
 the SMA-X database, logging of which may bloat the time series history stored in the SQL database. However, you may 
 want to still get a preview of what that data was, by storing every n'th sample of the original only. For example, for 
-an array with 1000 entries, you may want to store say 20 samples. Setting `<n>` to 50 will achieve that, by storing 
+an array with 1000 elemenrs, you may want to store say 20 samples. Setting `<n>` to 50 will achieve that, by storing 
 every 50th element in the SQL database only. (Still, the SQL database will store the original dimensionality of the 
 downsampled variables, and note the downsampling factor used also as metadata).
 

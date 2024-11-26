@@ -115,7 +115,7 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
   <div class="headertitle"><div class="title">smax-postgres </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="md_README-smax-postgres"></a> Record <a href="https://docs.google.com/document/d/1eYbWDClKkV7JnJxv4MxuNBNV47dFXuUWu7C4Ve_YTf0/edit?usp=sharing">SMA-X</a> history in PostgreSQL / TimescaleDB.</p>
+<div class="textblock"><p><a class="anchor" id="md_README-smax-postgres"></a> Record <a href="https://docs.google.com/document/d/1eYbWDClKkV7JnJxv4MxuNBNV47dFXuUWu7C4Ve_YTf0/edit?usp=sharing">SMA-X</a> history in PostgreSQL / TimescaleDB. It is free to use, in any way you like, without licensing restrictions.</p>
 <ul>
 <li><a href="https://smithsonian.github.io/smax-postgres/apidoc/html/files.html">API documentation</a></li>
 <li><a href="https://smithsonian.github.io/smax-postgres">Project pages</a> on github.io</li>
@@ -175,8 +175,10 @@ Building &lt;tt&gt;smax-postgres&lt;/tt&gt;</h2>
 <div class="fragment"><div class="line">$ make</div>
 </div><!-- fragment --><p>After building the library you can install the above components to the desired locations on your system. For a system-wide install you may simply run:</p>
 <div class="fragment"><div class="line">$ sudo make install</div>
-</div><!-- fragment --><p>Or, to install in some other locations, you may set a prefix. For example to install under <code>/opt</code> instead, you can:</p>
-<div class="fragment"><div class="line">$ sudo make prefix=/opt install</div>
+</div><!-- fragment --><p>Or, to install in some other locations, you may set a prefix and/or <code>DESTDIR</code>. For example, to install under <code>/opt</code> instead, you can:</p>
+<div class="fragment"><div class="line">$ sudo make prefix=&quot;/opt&quot; install</div>
+</div><!-- fragment --><p>Or, to stage the installation (to <code>/usr</code>) under a 'build root':</p>
+<div class="fragment"><div class="line">$ make DESTDIR=&quot;/tmp/stage&quot; install</div>
 </div><!-- fragment --><hr  />
 <p><a class="anchor" id="installation"></a> </p>
 <h2><a class="anchor" id="autotoc_md11"></a>
@@ -282,10 +284,10 @@ glob patterns</h4>
 <p>Specifies a variable or a glob pattern of variables, which are to be logged into the SQL database regardless of all other directives, which may otherwise limit if and when they are to be pushed. Reserve using this option only for the most critical cases, when the other configuration options do not provide the desired level of assurances for some absolutely critical data points.</p>
 <h4><a class="anchor" id="autotoc_md33"></a>
 &lt;tt&gt;exclude &lt;pattern&gt;&lt;/tt&gt;</h4>
-<p>Specifies a variable or a glob pattern of variables that are to be excluded from logging to the SQL database. <code>exclude</code> and <code>include</code> directives take effect in the order they were specified, so for a given variable only the last <code>include</code> or <code>exclude</code> statement, which pertains to it, will decide whether or not to log that given variable. Variables that are configured with an <code>always</code> directive will be logged to the SQL database regardless of any exclusions that may have been specified, either before or after. By default all metadata variables (ones whose name begin with <code>&lt;</code>) and all temporary variable (whose names begin with an underscore <code>_</code>) are excluded from logging, unless they are explicitly re-included.</p>
+<p>Specifies a variable or a glob pattern of variables that are to be excluded from logging to the SQL database. <code>exclude</code> and <code>include</code> directives take effect in the order they were specified, so for a given variable only the last <code>include</code> or <code>exclude</code> statement, which pertains to it, will decide whether or not to log that given variable. Variables that are configured with an <code>always</code> directive will be logged to the SQL database regardless of any exclusions that may have been specified, either before or after. By default all metadata variables (ones whose name begin with <code>&lt;</code>) and all temporary variables (whose names begin with an underscore <code>_</code>) are excluded from logging, unless they are explicitly re-included.</p>
 <h4><a class="anchor" id="autotoc_md34"></a>
 &lt;tt&gt;include &lt;pattern&gt;&lt;/tt&gt;</h4>
-<p>Specifies a variable or a glob pattern of variables that are to be excluded from logging to the SQL database. <code>exclude</code> and <code>include</code> directives take effect in the order they were specified, so for a given variable only the last <code>include</code> or <code>exclude</code> statement, which pertains to it, will decide whether or not to log that given variable. Variables that are configured with an <code>always</code> directive will be logged to the SQL database regardless of any exclusions that may have been specified, either before or after. By default, all SMA-X variables are included in the logging, except for the metadata and temporary data that are excluded by default (see <code>exclude</code>).</p>
+<p>Specifies a variable or a glob pattern of variables that are to be included for logging to the SQL database. <code>exclude</code> and <code>include</code> directives take effect in the order they were specified, so for a given variable only the last <code>include</code> or <code>exclude</code> statement, which pertains to it, will decide whether or not to log that given variable.</p>
 <h4><a class="anchor" id="autotoc_md35"></a>
 &lt;tt&gt;max_age &lt;interval&gt;&lt;/tt&gt;</h4>
 <p>Sets a maximum age for variables to push to the SQL database (default: '90d'). Variables that have not been updated in SMA-X for longer than the specified interval will not be pushed to the SQL database. Variables that are configured with an <code>always</code> directive will be logged to the SQL database regardless of their age.</p>
@@ -294,7 +296,7 @@ glob patterns</h4>
 <p>Sets a maximum byte size for variables to push to the SQL database (default: '1024'). Variables that have larger binary representations (after downsampling via the <code>sampling</code> directive, if any) will not be logged to the database to avoid bloating. However, variables explicitly configured via an <code>always</code> directive will be logged to the SQL database regardless of their storage requirements.</p>
 <h4><a class="anchor" id="autotoc_md37"></a>
 &lt;tt&gt;sample &lt;n&gt; &lt;pattern&gt;&lt;/tt&gt;</h4>
-<p>Log sparse samples of data for a variable or a glob pattern of variables. In some cases you may store large arrays in the SMA-X database, logging of which may bloat the time series history stored in the SQL database. However, you may want to still get a preview of what that data was, by storing every n'th sample of the original only. For example, for an array with 1000 entries, you may want to store say 20 samples. Setting <code>&lt;n&gt;</code> to 50 will achieve that, by storing every 50th element in the SQL database only. (Still, the SQL database will store the original dimensionality of the downsampled variables, and note the downsampling factor used also as metadata).</p>
+<p>Log sparse samples of data for a variable or a glob pattern of variables. In some cases you may store large arrays in the SMA-X database, logging of which may bloat the time series history stored in the SQL database. However, you may want to still get a preview of what that data was, by storing every n'th sample of the original only. For example, for an array with 1000 elemenrs, you may want to store say 20 samples. Setting <code>&lt;n&gt;</code> to 50 will achieve that, by storing every 50th element in the SQL database only. (Still, the SQL database will store the original dimensionality of the downsampled variables, and note the downsampling factor used also as metadata).</p>
 <hr  />
 <p> Copyright (C) 2024 Attila Kovács </p>
 </div></div><!-- PageDoc -->
