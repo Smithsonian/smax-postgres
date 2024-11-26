@@ -17,7 +17,8 @@
 
 # smax-postgres
 
-Record [SMA-X](https://docs.google.com/document/d/1eYbWDClKkV7JnJxv4MxuNBNV47dFXuUWu7C4Ve_YTf0/edit?usp=sharing)  history in PostgreSQL / TimescaleDB.
+Record [SMA-X](https://docs.google.com/document/d/1eYbWDClKkV7JnJxv4MxuNBNV47dFXuUWu7C4Ve_YTf0/edit?usp=sharing) 
+history in PostgreSQL / TimescaleDB. It is free to use, in any way you like, without licensing restrictions.
 
  - [API documentation](https://smithsonian.github.io/smax-postgres/apidoc/html/files.html)
  - [Project pages](https://smithsonian.github.io/smax-postgres) on github.io
