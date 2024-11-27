@@ -40,6 +40,14 @@ app: $(BIN)/smax-postgres
 .PHONY: all
 all: deploy check
 
+# Regression testing
+.PHONY: test
+test:
+
+# 'test' + 'analyze'
+.PHONY: check
+check: test analyze
+
 # Remove intermediates
 .PHONY: clean
 clean:
@@ -80,6 +88,18 @@ Doxyfile.local: Doxyfile Makefile
 local-dox: README-smax-postgres.md Doxyfile.local
 	doxygen Doxyfile.local
 
+# Some standard GNU targets, that should always exist...
+.PHONY: html
+html: local-dox
+
+.PHONY: dvi
+dvi:
+
+.PHONY: ps
+ps:
+
+.PHONY: pdf
+pdf:
 
 # Default values for install locations
 # See https://www.gnu.org/prep/standards/html_node/Directory-Variables.html 
@@ -143,15 +163,15 @@ ifneq ($(SYSTEMD), 0)
 endif
 
 .PHONY: install-doc
-install-doc: install-apidoc
+install-doc: install-html
 	@echo "installing docs under $(DESTDIR)$(docdir)."
 	@install -d $(DESTDIR)$(docdir)
 	$(INSTALL_DATA) LICENSE $(DESTDIR)$(docdir)
 	$(INSTALL_DATA) README-smax-postgres.md $(DESTDIR)$(docdir)/README.md
 	$(INSTALL_DATA) CHANGELOG.md $(DESTDIR)$(docdir)
 
-.PHONY: install-apidoc
-install-apidoc:
+.PHONY: install-html
+install-html:
 ifneq ($(wildcard apidoc/html/search/*),)
 	@echo "installing API docs under $(DESTDIR)$(htmldir)."
 	install -d $(DESTDIR)$(htmldir)/search
@@ -171,7 +191,7 @@ help:
 	@echo
 	@echo "  app           'smax-postgres' application."
 	@echo "  local-dox     Compiles local HTML API documentation using 'doxygen'."
-	@echo "  check         Performs static analysis with 'cppcheck'."
+	@echo "  analyze       Performs static analysis with 'cppcheck'."
 	@echo "  all           All of the above."
 	@echo "  install       Install components (e.g. 'make prefix=<path> install')"
 	@echo "  install-sma   Install at the SMA (with sudo)"

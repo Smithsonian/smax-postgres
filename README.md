@@ -1,5 +1,5 @@
 ![Build Status](https://github.com/Smithsonian/smax-postgres/actions/workflows/build.yml/badge.svg)
-![Static Analysis](https://github.com/Smithsonian/smax-postgres/actions/workflows/check.yml/badge.svg)
+![Static Analysis](https://github.com/Smithsonian/smax-postgres/actions/workflows/analyze.yml/badge.svg)
 <a href="https://smithsonian.github.io/smax-postgres/apidoc/html/files.html">
  ![API documentation](https://github.com/Smithsonian/smax-postgres/actions/workflows/dox.yml/badge.svg)
 </a>
