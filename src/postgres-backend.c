@@ -30,6 +30,7 @@
 #  include <systemd/sd-daemon.h>
 #endif
 
+#define __XCHANGE_INTERNAL_API__                          ///< Use internal definitions
 #include "smax-postgres.h"
 
 #ifndef FIX_SCALAR_DIMS
@@ -409,10 +410,10 @@ static int ensureCommandCapacity(int n) {
     cmd = malloc(cmdSize);
   }
   else if(n > cmdSize) {
-    char *old = cmd;
     cmdSize = n;
     cmd = realloc(cmd, cmdSize);
-    if(!cmd) free(old);
+    x_check_alloc(cmd);
+
     dprintf("Growing command buffer to %d bytes.\n", cmdSize);
   }
 
@@ -908,7 +909,7 @@ static int sqlCreateTable(const Variable *u, int id) {
   char sqlType[SQL_TYPE_LEN];
   char colName[SQL_COL_NAME_LEN];
   char *next;
-  int i, n = 1;
+  int i, n;
 
   if(!u || id < 0) {
     errno = EINVAL;
@@ -1512,7 +1513,7 @@ static int sqlAddValues(const Variable *u) {
   next += strftime(next, 100, SQL_DATE_FORMAT, gmtime(&u->grabTime));
   next += sprintf(next, SQL_SEP "'%d'", (int) (u->grabTime - u->updateTime));
   next = appendValues(u, next);
-  next += sprintf(next, ");");
+  sprintf(next, ");");
 
   // Add values in an atomic block...
   if(!sqlBegin()) return ERROR_RETURN;
