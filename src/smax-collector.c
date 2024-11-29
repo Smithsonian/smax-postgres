@@ -81,11 +81,13 @@ int initCollector() {
   smaxSetResilient(TRUE);
   smaxSetResilientExit(FALSE);
 
+  smaxSetServer(getSMAXServerAddress(), 0);
+
   status = smaxConnect();
 
   // Keep trying to connect to SMA-X for up to 1 minute before giving up...
   for(i=0; i < CONNECT_ATTEMPTS && status == X_NO_SERVICE; i++) {
-    status = smaxConnect(getSMAXServerAddress());
+    status = smaxConnect();
     if(status == X_NO_SERVICE) {
       if(!warned) {
         fprintf(stderr, "Failed to connect to SMA-X. Will keep trying silently...\n");
