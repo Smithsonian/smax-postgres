@@ -48,6 +48,11 @@ test:
 .PHONY: check
 check: test analyze
 
+# Static code analysis via Facebook's infer
+.PHONY: infer
+infer: clean
+	infer run -- make app
+
 # Remove intermediates
 .PHONY: clean
 clean:
@@ -193,6 +198,7 @@ help:
 	@echo "  local-dox     Compiles local HTML API documentation using 'doxygen'."
 	@echo "  analyze       Performs static analysis with 'cppcheck'."
 	@echo "  all           All of the above."
+	@echo "  distro        shared libs and documentation (default target)."
 	@echo "  install       Install components (e.g. 'make prefix=<path> install')"
 	@echo "  install-sma   Install at the SMA (with sudo)"
 	@echo "  clean         Removes intermediate products."
