@@ -59,9 +59,10 @@ LDFLAGS ?= -lm
 
 # cppcheck options for 'check' target
 CHECKOPTS ?= --enable=performance,warning,portability,style --language=c \
-            --error-exitcode=1 --std=c11 $(CHECKEXTRA)
+            --error-exitcode=1 --std=c11
 
-CHECKOPTS += --template='{file}({line}): {severity} ({id}): {message}' --inline-suppr
+# Add-on ccpcheck options
+CHECKOPTS += --inline-suppr $(CHECKEXTRA)
 
 # Exhaustive checking for newer cppcheck
 #CHECKOPTS += --check-level=exhaustive
