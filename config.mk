@@ -89,11 +89,6 @@ else
   endif
 endif
 
-# Compiler and linker options etc.
-ifeq ($(BUILD_MODE),debug)
-  CFLAGS += -g -DDEBUG
-endif
-
 # Always link against dependencies
 LDFLAGS += -lm -lsmax -lredisx -lxchange -lpq
 

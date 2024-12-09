@@ -91,9 +91,6 @@ prior to invoking `make`. The following build variables can be configured:
  - `LDFLAGS`: Extra linker flags (default: _not set_). Note, `-lm -pthread -lsmax -lredisx -lxchange -lpq -lpopt` will 
    be added automatically.
 
- - `BUILD_MODE`: You can set it to `debug` to enable debugging features: it will initialize the global `xDebug` 
-   variable to `TRUE` and add `-g` to `CFLAGS`.
-
  - `CHECKEXTRA`: Extra options to pass to `cppcheck` for the `make check` target
  
  - `XCHANGE`: If the [Smithsonian/xchange](https://github.com/Smithsonian/xchange) library is not installed on your
