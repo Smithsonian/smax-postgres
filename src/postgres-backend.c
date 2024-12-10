@@ -500,16 +500,12 @@ static int printSQLType(XType type, char *dst) {
     case X_BOOLEAN:
       return sprintf(dst, SQL_BOOLEAN);
     case X_BYTE:
-    case X_BYTE_HEX:
       return sprintf(dst, SQL_INT8);
     case X_SHORT:
-    case X_SHORT_HEX:
       return sprintf(dst, SQL_INT16);
     case X_INT:
-    case X_INT_HEX:
       return sprintf(dst, SQL_INT32);
     case X_LONG:
-    case X_LONG_HEX:
       return sprintf(dst, SQL_INT64);
     case X_FLOAT:
       return sprintf(dst, SQL_FLOAT);
@@ -611,17 +607,13 @@ static char *appendValue(const void *data, XType type, char *dst) {
 
     case X_BOOLEAN: return dst + sprintf(dst, "%s",*(boolean *) data ? "true" : "false");
 
-    case X_BYTE:
-    case X_BYTE_HEX: return dst + sprintf(dst, "%hhd", *(char *) data);
+    case X_BYTE: return dst + sprintf(dst, "%hhd", *(char *) data);
 
-    case X_SHORT:
-    case X_SHORT_HEX: return dst + sprintf(dst, "%hd", *(int16_t *) data);
+    case X_SHORT: return dst + sprintf(dst, "%hd", *(int16_t *) data);
 
-    case X_INT:
-    case X_INT_HEX: return dst + sprintf(dst, "%d", *(int32_t *) data);
+    case X_INT: return dst + sprintf(dst, "%d", *(int32_t *) data);
 
-    case X_LONG:
-    case X_LONG_HEX: return dst + sprintf(dst, "%ld", *(int64_t *) data);
+    case X_LONG: return dst + sprintf(dst, "%ld", *(int64_t *) data);
 
     case X_FLOAT: {
       float f = *(float *) data;

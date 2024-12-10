@@ -49,10 +49,17 @@ CPPFLAGS += -I$(INC)
 #CPPFLAGS += -DTIMESCALEDB_OLD=1
 
 # Base compiler options (if not defined externally...)
-CFLAGS ?= -g -Os -Wall -std=c99
+CFLAGS ?= -g -Os -Wall
+
+# Compile for specific C standard
+ifdef CSTANDARD
+  CFLAGS += -std=$(CSTANDARD)
+endif
 
 # Extra warnings (not supported on all compilers)
-#CFLAGS += -Wextra
+ifeq ($(WEXTRA), 1) 
+  CFLAGS += -Wextra
+endif
 
 # Link against math libs (for e.g. isnan())
 LDFLAGS ?= -lm
