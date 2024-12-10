@@ -77,7 +77,7 @@ int main(int argc, const char *argv[]) {
           {"debug",       'd', POPT_ARG_NONE,   &debug,        0, "Turn on console debug messages", NULL},
           {"version",     'v', POPT_ARG_NONE,   &version,      0, "Print version info only", NULL},
           POPT_AUTOHELP
-          {NULL}
+          {}
   };
 
   poptContext optCon = poptGetContext("smax-postgres", argc, argv, options, 0);

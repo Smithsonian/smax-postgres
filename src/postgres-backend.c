@@ -731,7 +731,7 @@ static int getEnclosingStringLength(const XField *f, int sampling) {
  *                      or else NULL if there was an error.
  */
 static TableDescriptor *addVariable(const char *id, const Variable *u) {
-  ENTRY e = { NULL }, *added = NULL;
+  ENTRY e = { NULL, NULL }, *added = NULL;
   TableDescriptor *desc;
   int idx;
 
