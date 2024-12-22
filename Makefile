@@ -164,6 +164,7 @@ ifneq ($(SYSTEMD), 0)
 	@echo "installing systemd unit file under $(DESTDIR)$(systemddir)."
 	mkdir -p $(DESTDIR)$(systemddir)
 	$(INSTALL_DATA) smax-postgres.service $(DESTDIR)$(systemddir)/
+	sed -i "s:-VERSION:-$(PGVER)/:g" $(DESTDIR)$(systemddir)/smax-postgres.service
 	sed -i "s:/usr/:$(prefix)/:g" $(DESTDIR)$(systemddir)/smax-postgres.service
 endif
 

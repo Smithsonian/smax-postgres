@@ -8,9 +8,12 @@
 # files, i.e. sd-daemon.h and libsystemd.so).
 SYSTEMD ?= 1
 
+# The PostgreSQL major version
+PGVER ?= 16
+
 # The PostgreSQL installation directory containing C headers and shared
 # libraries (libpq.so)
-#PGDIR ?= /usr/pgsql-16
+#PGDIR ?= /usr/pgsql-$(PGVER)
 
 # Location under which the Smithsonian/xchange library is installed.
 # (I.e., the root directory under which there is an include/ directory

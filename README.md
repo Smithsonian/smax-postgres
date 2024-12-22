@@ -75,6 +75,8 @@ Additionally, to configure your SMA-X server, you will need the
 You can configure the build, either by editing `config.mk` or else by defining the relevant environment variables 
 prior to invoking `make`. The following build variables can be configured:
 
+ - `PGVER`: Major version of PostgreSQL to use (default: 16). Needed e.g. for systemd integration.
+
  - `PGDIR`: Root directory of a specific PostgreSQL installation to build against (not set by default). If not set
    we'll build against the default PostgreSQL available on your system.
   
