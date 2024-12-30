@@ -51,7 +51,7 @@ check: test analyze
 # Static code analysis via Facebook's infer
 .PHONY: infer
 infer: clean
-	infer run -- make app
+	infer run -- $(MAKE) app
 
 # Remove intermediates
 .PHONY: clean
