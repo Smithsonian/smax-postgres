@@ -12,7 +12,7 @@ include config.mk
 # ===============================================================================
 
 # Link against necessary system libraries
-LDFLAGS += -pthread -lm -lpopt
+LDFLAGS += -lpthread -lm -lpopt
 
 # Check if there is a doxygen we can run
 ifndef DOXYGEN
