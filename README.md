@@ -31,16 +31,16 @@ Last Updated: 18 September 2024
 
 ## Table of Contents
 
- - [Introduction](#introduction)
- - [Prerequisites](#prerequisites)
- - [Building `smax-postgres`](#building)
- - [Installation](#installation)
+ - [Introduction](#smaxpg-introduction)
+ - [Prerequisites](#smaxpg-prerequisites)
+ - [Building `smax-postgres`](#building-smaxpg)
+ - [Installation](#smaxpg-installation)
  - [Database organization (for clients)](#database-organization)
  - [Configuration reference](#configuration-reference)
 
 ----------------------------------------------------------------------------------------------------------------------
 
-<a name="introduction"></a>
+<a name="smaxpg-introduction"></a>
 ## Introduction
 
 `smax-postgres` is a daemon application, which can collect data from an 
@@ -51,7 +51,7 @@ as well as regular snapshots of all selected SMA-X variables.
 
 
 
-<a name="prerequisites"></a>
+<a name="smaxpg-prerequisites"></a>
 ## Prerequisites
 
 The `smax-postgres` application has build and runtime dependencies on the following software:
@@ -69,7 +69,7 @@ Additionally, to configure your SMA-X server, you will need the
 
 ----------------------------------------------------------------------------------------------------------------------
 
-<a name="building"></a>
+<a name="building-smaxpg"></a>
 ## Building `smax-postgres`
 
 You can configure the build, either by editing `config.mk` or else by defining the relevant environment variables 
@@ -146,7 +146,7 @@ Or, to stage the installation (to `/usr`) under a 'build root':
 
 ----------------------------------------------------------------------------------------------------------------------
 
-<a name="installation"></a>
+<a name="smaxpg-installation"></a>
 ## Installation
 
 Prior to installation, you should check that the PostgreSQL service name is correct in `smax-postgres.service`, and
