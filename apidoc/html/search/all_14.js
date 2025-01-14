@@ -23,5 +23,5 @@ var searchData=
   ['tt_20sql_5fuser_20user_20name_20tt_20',['&lt;tt&gt;sql_user &lt;user-name&gt;&lt;/tt&gt;',['../index.html#autotoc_md24',1,'']]],
   ['tt_20update_5finterval_20interval_20tt_21',['&lt;tt&gt;update_interval &lt;interval&gt;&lt;/tt&gt;',['../index.html#autotoc_md29',1,'']]],
   ['tt_20use_5fhypertables_201_200_20tt_22',['&lt;tt&gt;use_hypertables &lt;1|0&gt;&lt;/tt&gt;',['../index.html#autotoc_md25',1,'']]],
-  ['type_23',['type',['../../../smax-clib/apidoc/html/structXMessage.html#a23506fc4821ab6d9671f3e6222591a96',1,'XMessage::type'],['../../../redisx/apidoc/html/structRESP.html#aff17911edc8208aa8ddb1c7c52c78389',1,'RESP::type'],['../../../xchange/apidoc/html/structXField.html#a6535ecc7e6d29e64f0d34cd926823fd9',1,'XField::type']]]
+  ['type_23',['type',['../../../smax-clib/apidoc/html/structXMessage.html#a23506fc4821ab6d9671f3e6222591a96',1,'XMessage::type'],['../../../redisx/apidoc/html/structRESP.html#a93869a69154ac2297800b0afff64d600',1,'RESP::type'],['../../../xchange/apidoc/html/structXField.html#a6535ecc7e6d29e64f0d34cd926823fd9',1,'XField::type']]]
 ];

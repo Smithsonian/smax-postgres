@@ -663,6 +663,13 @@
     <includes id="sql-types_8h" name="sql-types.h" local="yes" import="no" module="no" objc="no">sql-types.h</includes>
     <member kind="define">
       <type>#define</type>
+      <name>__XCHANGE_INTERNAL_API__</name>
+      <anchorfile>postgres-backend_8c.html</anchorfile>
+      <anchor>ac36bd75f87a1614fb477a0fbcd5df1f3</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
       <name>_GNU_SOURCE</name>
       <anchorfile>postgres-backend_8c.html</anchorfile>
       <anchor>a369266c24eacffb87046522897a570d5</anchor>
@@ -974,10 +981,10 @@
     <title>smax-postgres</title>
     <filename>index.html</filename>
     <docanchor file="index.html">md_README-smax-postgres</docanchor>
-    <docanchor file="index.html">introduction</docanchor>
-    <docanchor file="index.html">prerequisites</docanchor>
-    <docanchor file="index.html">building</docanchor>
-    <docanchor file="index.html">installation</docanchor>
+    <docanchor file="index.html">smaxpg-introduction</docanchor>
+    <docanchor file="index.html">smaxpg-prerequisites</docanchor>
+    <docanchor file="index.html">building-smaxpg</docanchor>
+    <docanchor file="index.html">smaxpg-installation</docanchor>
     <docanchor file="index.html">database-organization</docanchor>
     <docanchor file="index.html">configuration-reference</docanchor>
   </compound>

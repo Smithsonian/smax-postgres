@@ -177,6 +177,7 @@
           <topic label="setUseHyperTables" href="logger-config_8c.html#a10cef261ca70c71249a7688c0aaa579d"/>
         </topic>
         <topic label="postgres-backend.c" href="postgres-backend_8c.html">
+          <topic label="__XCHANGE_INTERNAL_API__" href="postgres-backend_8c.html#ac36bd75f87a1614fb477a0fbcd5df1f3"/>
           <topic label="_GNU_SOURCE" href="postgres-backend_8c.html#a369266c24eacffb87046522897a570d5"/>
           <topic label="COL_NAME_STEM" href="postgres-backend_8c.html#a4b4592be270d660fe23511b72b75a03f"/>
           <topic label="DEFAULT_STRING_LEN" href="postgres-backend_8c.html#a5a2fe366a211c8109b6b723ecc4b87c7"/>

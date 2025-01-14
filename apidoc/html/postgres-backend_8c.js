@@ -1,5 +1,6 @@
 var postgres_backend_8c =
 [
+    [ "__XCHANGE_INTERNAL_API__", "postgres-backend_8c.html#ac36bd75f87a1614fb477a0fbcd5df1f3", null ],
     [ "_GNU_SOURCE", "postgres-backend_8c.html#a369266c24eacffb87046522897a570d5", null ],
     [ "COL_NAME_STEM", "postgres-backend_8c.html#a4b4592be270d660fe23511b72b75a03f", null ],
     [ "DEFAULT_STRING_LEN", "postgres-backend_8c.html#a5a2fe366a211c8109b6b723ecc4b87c7", null ],

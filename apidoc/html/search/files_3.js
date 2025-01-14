@@ -10,8 +10,9 @@ var searchData=
   ['smax_2dprivate_2eh_7',['smax-private.h',['../../../smax-clib/apidoc/html/smax-private_8h.html',1,'']]],
   ['smax_2dqueue_2ec_8',['smax-queue.c',['../../../smax-clib/apidoc/html/smax-queue_8c.html',1,'']]],
   ['smax_2dresilient_2ec_9',['smax-resilient.c',['../../../smax-clib/apidoc/html/smax-resilient_8c.html',1,'']]],
-  ['smax_2dutil_2ec_10',['smax-util.c',['../../../smax-clib/apidoc/html/smax-util_8c.html',1,'']]],
-  ['smax_2ec_11',['smax.c',['../../../smax-clib/apidoc/html/smax_8c.html',1,'']]],
-  ['smax_2eh_12',['smax.h',['../../../smax-clib/apidoc/html/smax_8h.html',1,'']]],
-  ['sql_2dtypes_2eh_13',['sql-types.h',['../sql-types_8h.html',1,'']]]
+  ['smax_2dtls_2ec_10',['smax-tls.c',['../../../smax-clib/apidoc/html/smax-tls_8c.html',1,'']]],
+  ['smax_2dutil_2ec_11',['smax-util.c',['../../../smax-clib/apidoc/html/smax-util_8c.html',1,'']]],
+  ['smax_2ec_12',['smax.c',['../../../smax-clib/apidoc/html/smax_8c.html',1,'']]],
+  ['smax_2eh_13',['smax.h',['../../../smax-clib/apidoc/html/smax_8h.html',1,'']]],
+  ['sql_2dtypes_2eh_14',['sql-types.h',['../sql-types_8h.html',1,'']]]
 ];

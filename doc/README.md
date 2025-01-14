@@ -14,16 +14,16 @@ Last Updated: 18 September 2024
 
 ## Table of Contents
 
- - [Introduction](#introduction)
- - [Prerequisites](#prerequisites)
- - [Building `smax-postgres`](#building)
- - [Installation](#installation)
+ - [Introduction](#smaxpg-introduction)
+ - [Prerequisites](#smaxpg-prerequisites)
+ - [Building `smax-postgres`](#building-smaxpg)
+ - [Installation](#smaxpg-installation)
  - [Database organization (for clients)](#database-organization)
  - [Configuration reference](#configuration-reference)
 
 ----------------------------------------------------------------------------------------------------------------------
 
-<a name="introduction"></a>
+<a name="smaxpg-introduction"></a>
 ## Introduction
 
 `smax-postgres` is a daemon application, which can collect data from an 
@@ -34,7 +34,7 @@ as well as regular snapshots of all selected SMA-X variables.
 
 
 
-<a name="prerequisites"></a>
+<a name="smaxpg-prerequisites"></a>
 ## Prerequisites
 
 The `smax-postgres` application has build and runtime dependencies on the following software:
@@ -52,11 +52,13 @@ Additionally, to configure your SMA-X server, you will need the
 
 ----------------------------------------------------------------------------------------------------------------------
 
-<a name="building"></a>
+<a name="building-smaxpg"></a>
 ## Building `smax-postgres`
 
 You can configure the build, either by editing `config.mk` or else by defining the relevant environment variables 
 prior to invoking `make`. The following build variables can be configured:
+
+ - `PGVER`: Major version of PostgreSQL to use (default: 16). Needed e.g. for systemd integration.
 
  - `PGDIR`: Root directory of a specific PostgreSQL installation to build against (not set by default). If not set
    we'll build against the default PostgreSQL available on your system.
@@ -68,14 +70,16 @@ prior to invoking `make`. The following build variables can be configured:
 
  - `CPPFLAGS`: C preprocessor flags, such as externally defined compiler constants.
  
- - `CFLAGS`: Flags to pass onto the C compiler (default: `-Os -Wall -std=c99`). Note, `-Iinclude` will be added 
+ - `CFLAGS`: Flags to pass onto the C compiler (default: `-g -Os -Wall`). Note, `-Iinclude` will be added 
    automatically.
+   
+ - `CSTANDARD`: Optionally, specify the C standard to compile for, e.g. `c99` to compile for the C99 standard. If
+   defined then `-std=$(CSTANDARD)` is added to `CFLAGS` automatically.
+   
+ - `WEXTRA`: If set to 1, `-Wextra` is added to `CFLAGS` automatically.
    
  - `LDFLAGS`: Extra linker flags (default: _not set_). Note, `-lm -pthread -lsmax -lredisx -lxchange -lpq -lpopt` will 
    be added automatically.
-
- - `BUILD_MODE`: You can set it to `debug` to enable debugging features: it will initialize the global `xDebug` 
-   variable to `TRUE` and add `-g` to `CFLAGS`.
 
  - `CHECKEXTRA`: Extra options to pass to `cppcheck` for the `make check` target
  
@@ -125,7 +129,7 @@ Or, to stage the installation (to `/usr`) under a 'build root':
 
 ----------------------------------------------------------------------------------------------------------------------
 
-<a name="installation"></a>
+<a name="smaxpg-installation"></a>
 ## Installation
 
 Prior to installation, you should check that the PostgreSQL service name is correct in `smax-postgres.service`, and

@@ -126,19 +126,19 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 <h2><a class="anchor" id="autotoc_md4"></a>
 Table of Contents</h2>
 <ul>
-<li><a class="el" href="index.html#introduction">Introduction</a></li>
-<li><a class="el" href="index.html#prerequisites">Prerequisites</a></li>
-<li><a class="el" href="index.html#building">Building `smax-postgres`</a></li>
-<li><a class="el" href="index.html#installation">Installation</a></li>
+<li><a class="el" href="index.html#smaxpg-introduction">Introduction</a></li>
+<li><a class="el" href="index.html#smaxpg-prerequisites">Prerequisites</a></li>
+<li><a class="el" href="index.html#building-smaxpg">Building `smax-postgres`</a></li>
+<li><a class="el" href="index.html#smaxpg-installation">Installation</a></li>
 <li><a class="el" href="index.html#database-organization">Database organization (for clients)</a></li>
 <li><a class="el" href="index.html#configuration-reference">Configuration reference</a></li>
 </ul>
 <hr  />
-<p><a class="anchor" id="introduction"></a> </p>
+<p><a class="anchor" id="smaxpg-introduction"></a> </p>
 <h2><a class="anchor" id="autotoc_md6"></a>
 Introduction</h2>
 <p><code>smax-postgres</code> is a daemon application, which can collect data from an <a href="https://docs.google.com/document/d/1eYbWDClKkV7JnJxv4MxuNBNV47dFXuUWu7C4Ve_YTf0/edit?usp=sharing">SMA information eXchange (SMA-X)</a> realtime database and insert these into a <b>PostgreSQL</b> database to create a time-series historical record for all or selected SMA-X variables. The program is highly customizable and supports both regular updates for changing variables as well as regular snapshots of all selected SMA-X variables.</p>
-<p><a class="anchor" id="prerequisites"></a> </p>
+<p><a class="anchor" id="smaxpg-prerequisites"></a> </p>
 <h2><a class="anchor" id="autotoc_md7"></a>
 Prerequisites</h2>
 <p>The <code>smax-postgres</code> application has build and runtime dependencies on the following software:</p>
@@ -153,18 +153,20 @@ Prerequisites</h2>
 </ul>
 <p>Additionally, to configure your SMA-X server, you will need the <a href="https://github.com/Smithsonian/smax-server">Smithsonian/smax-server</a> repo also.</p>
 <hr  />
-<p><a class="anchor" id="building"></a> </p>
+<p><a class="anchor" id="building-smaxpg"></a> </p>
 <h2><a class="anchor" id="autotoc_md9"></a>
 Building &lt;tt&gt;smax-postgres&lt;/tt&gt;</h2>
 <p>You can configure the build, either by editing <code>config.mk</code> or else by defining the relevant environment variables prior to invoking <code>make</code>. The following build variables can be configured:</p>
 <ul>
+<li><code>PGVER</code>: Major version of PostgreSQL to use (default: 16). Needed e.g. for systemd integration.</li>
 <li><code>PGDIR</code>: Root directory of a specific PostgreSQL installation to build against (not set by default). If not set we'll build against the default PostgreSQL available on your system.</li>
 <li><code>SYSTEMD</code>: Sets whether to compile with SystemD integration (needs <code>libsystemd.so</code> and <code>sd-daemon.h</code>). Default is 1 (enabled).</li>
 <li><code>CC</code>: The C compiler to use (default: <code>gcc</code>).</li>
 <li><code>CPPFLAGS</code>: C preprocessor flags, such as externally defined compiler constants.</li>
-<li><code>CFLAGS</code>: Flags to pass onto the C compiler (default: <code>-Os -Wall -std=c99</code>). Note, <code>-Iinclude</code> will be added automatically.</li>
+<li><code>CFLAGS</code>: Flags to pass onto the C compiler (default: <code>-g -Os -Wall</code>). Note, <code>-Iinclude</code> will be added automatically.</li>
+<li><code>CSTANDARD</code>: Optionally, specify the C standard to compile for, e.g. <code>c99</code> to compile for the C99 standard. If defined then <code>-std=$(CSTANDARD)</code> is added to <code>CFLAGS</code> automatically.</li>
+<li><code>WEXTRA</code>: If set to 1, <code>-Wextra</code> is added to <code>CFLAGS</code> automatically.</li>
 <li><code>LDFLAGS</code>: Extra linker flags (default: <em>not set</em>). Note, <code>-lm -pthread -lsmax -lredisx -lxchange -lpq -lpopt</code> will be added automatically.</li>
-<li><code>BUILD_MODE</code>: You can set it to <code>debug</code> to enable debugging features: it will initialize the global <code>xDebug</code> variable to <code>TRUE</code> and add <code>-g</code> to <code>CFLAGS</code>.</li>
 <li><code>CHECKEXTRA</code>: Extra options to pass to <code>cppcheck</code> for the <code>make check</code> target</li>
 <li><code>XCHANGE</code>: If the <a href="https://github.com/Smithsonian/xchange">Smithsonian/xchange</a> library is not installed on your system (e.g. under <code>/usr</code>) set <code>XCHANGE</code> to where the distribution can be found. The build will expect to find <code><a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html">xchange.h</a></code> under <code>$(XCHANGE)/include</code> and <code>libxchange.so</code> / <code>libxchange.a</code> under <code>$(XCHANGE)/lib</code> or else in the default <code>LD_LIBRARY_PATH</code>.</li>
 <li><code>REDISX</code>: If the <a href="https://github.com/Smithsonian/redisx">Smithsonian/redisx</a> library is not installed on your system (e.g. under <code>/usr</code>) set <code>REDISX</code> to where the distribution can be found. The build will expect to find <code><a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html">redisx.h</a></code> under <code>$(REDISX)/include</code> and <code>libredisx.so</code> / <code>libredisx.a</code> under <code>$(REDISX)/lib</code> or else in the default <code>LD_LIBRARY_PATH</code>.</li>
@@ -180,7 +182,7 @@ Building &lt;tt&gt;smax-postgres&lt;/tt&gt;</h2>
 </div><!-- fragment --><p>Or, to stage the installation (to <code>/usr</code>) under a 'build root':</p>
 <div class="fragment"><div class="line">$ make DESTDIR=&quot;/tmp/stage&quot; install</div>
 </div><!-- fragment --><hr  />
-<p><a class="anchor" id="installation"></a> </p>
+<p><a class="anchor" id="smaxpg-installation"></a> </p>
 <h2><a class="anchor" id="autotoc_md11"></a>
 Installation</h2>
 <p>Prior to installation, you should check that the PostgreSQL service name is correct in <code>smax-postgres.service</code>, and edit it as necessary for your system configuration. You may also edit the <code>cfg/smax-postgres.cfg</code> now, or after it is installed.</p>
