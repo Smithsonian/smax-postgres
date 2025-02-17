@@ -387,11 +387,11 @@ static int UpdateChanged(const char *pattern, double from, const time_t grabTime
 
   dprintf("Checking for changes in '%s' (dt = %.3f s)\n", pattern, from - (start.tv_sec + 1e-9 * start.tv_nsec));
 
-  entries = redisxScanTable(smaxGetRedis(), "<timestamps>", pattern, &n, &status);
-  if(status) {
-    dprintf("! SMA-X: redisxScanTable(): %s\n", smaxErrorDescription(status));
+  entries = redisxScanTable(smaxGetRedis(), "<timestamps>", pattern, &n);
+  if(n < 0) {
+    dprintf("! SMA-X: redisxScanTable(): %s\n", smaxErrorDescription(n));
     DestroyEntries(entries, n);
-    return status;
+    return n;
   }
 
   if(n == 0) {
@@ -400,7 +400,7 @@ static int UpdateChanged(const char *pattern, double from, const time_t grabTime
     return 0;
   }
 
-  units = redisxScanTable(smaxGetRedis(), "<units>", pattern, &nu, &status);
+  units = redisxScanTable(smaxGetRedis(), "<units>", pattern, &nu);
 
   dprintf("Got %d timestamps for '%s' to check...\n", n, pattern);
 
