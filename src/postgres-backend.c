@@ -246,8 +246,10 @@ static int shorten(char *str, const char *match, const char *replacement) {
   char *from = strstr(str, match);
   if(from) {
     char *rest = strdup(from + strlen(match));
-    sprintf(from, "%s%s", replacement, rest);
-    free(rest);
+    if(rest) {
+      sprintf(from, "%s%s", replacement, rest);
+      free(rest);
+    }
   }
 
   return 0;
@@ -620,7 +622,6 @@ static char *appendValue(const void *data, XType type, char *dst) {
       if(isfinite(f)) return dst + sprintf(dst, "%.7g", f);      // Was %.7e
       return dst + sprintf(dst, "'NaN'");
     }
-    break;
 
     case X_DOUBLE: {
       // SQL can be a bit picky with extreme doubles so apply some sanity here...
