@@ -503,11 +503,11 @@ static int printSQLType(XType type, char *dst) {
       return sprintf(dst, SQL_BOOLEAN);
     case X_BYTE:
       return sprintf(dst, SQL_INT8);
-    case X_SHORT:
+    case X_INT16:
       return sprintf(dst, SQL_INT16);
-    case X_INT:
+    case X_INT32:
       return sprintf(dst, SQL_INT32);
-    case X_LONG:
+    case X_INT64:
       return sprintf(dst, SQL_INT64);
     case X_FLOAT:
       return sprintf(dst, SQL_FLOAT);
