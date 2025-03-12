@@ -411,6 +411,6 @@ every 50th element in the SQL database only. (Still, the SQL database will store
 downsampled variables, and note the downsampling factor used also as metadata).
 
 -----------------------------------------------------------------------------
-Copyright (C) 2024 Attila Kovács
+Copyright (C) 2025 Attila Kovács
 
 
