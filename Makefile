@@ -106,6 +106,9 @@ ps:
 .PHONY: pdf
 pdf:
 
+# The package name to use for installation paths
+PACKAGE_NAME ?= smax-postgres
+
 # Default values for install locations
 # See https://www.gnu.org/prep/standards/html_node/Directory-Variables.html 
 prefix ?= /usr
@@ -116,8 +119,8 @@ systemddir ?= $(sysconfdir)/systemd/system
 datarootdir ?= $(prefix)/share
 datadir ?= $(datarootdir)
 mandir ?= $(datarootdir)/man
-mydatadir ?= $(datadir)/smax-postgres
-docdir ?= $(datarootdir)/doc/smax-postgres
+mydatadir ?= $(datadir)/$(PACKAGE_NAME)
+docdir ?= $(datarootdir)/doc/$(PACKAGE_NAME)
 htmldir ?= $(docdir)/html
 
 # Standard install commands
