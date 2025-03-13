@@ -28,7 +28,7 @@ jobs:
     env:
       CC: gcc
       CPPFLAGS: -I/usr/include/postgresql
-      CFLAGS: -Os -Wall -Wextra -Werror -std=c99
+      WEXTRA: 1
       XCHANGE: ../xchange
       REDISX: ../redisx
       SMAXLIB: ../smax-clib
