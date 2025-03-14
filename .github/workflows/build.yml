@@ -29,6 +29,7 @@ jobs:
       CC: gcc
       CPPFLAGS: -I/usr/include/postgresql
       WEXTRA: 1
+      FORTIFY: 3
       XCHANGE: ../xchange
       REDISX: ../redisx
       SMAXLIB: ../smax-clib
