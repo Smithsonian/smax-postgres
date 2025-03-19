@@ -141,8 +141,6 @@ ifdef XCHANGE
   LDFLAGS += -L$(XCHANGE)/lib
 endif
 
-
-
 # Search for files in the designated locations
 vpath %.h $(INC)
 vpath %.c $(SRC)
