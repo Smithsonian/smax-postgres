@@ -525,7 +525,7 @@ static time_t SleepToRound(int seconds) {
  * @return  (s) The decimal SMA-X server time (UNIX time), as queried by TIME on Redis
  */
 static double GetServerTime() {
-  struct timespec ts;
+  struct timespec ts = {};
   double t;
 
   smaxGetServerTime(&ts);

@@ -287,7 +287,7 @@ static void initCache() {
   for (i = 0; i < nTitles; i++) {
     PGresult *columns;
     const char *id;
-    char type[SQL_TYPE_LEN] = {};
+    char type[SQL_TYPE_LEN] = {'\0'};
     char colFmt[SQL_COL_NAME_LEN];
     int k, firstDataCol = 2, nCols, table = 0;
     ENTRY e, *added = NULL;
