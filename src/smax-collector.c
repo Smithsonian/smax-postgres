@@ -227,7 +227,7 @@ static boolean SubmitUpdate(Update *u) {
   }
 
 # if FIX_PYSMAX_STRING_DIM
-  if(f->type == X_STRING && f->ndim <= 1 && f->sizes[0] == strlen(f->value)) {
+  if(f->type == X_STRING && f->ndim <= 1 && f->sizes[0] == (int) strlen(f->value)) {
     dprintf("!FIX! %s: string count %d -> 1\n", v->id, f->sizes[0]);
     f->ndim = 1;
     f->sizes[0] = 1;
