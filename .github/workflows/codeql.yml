@@ -54,15 +54,18 @@ jobs:
         # If you are analyzing a compiled language, you can modify the 'build-mode' for that language to customize how
         # your codebase is analyzed, see https://docs.github.com/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/codeql-code-scanning-for-compiled-languages
     steps:
+    - name: apt update
+      run: sudo apt-get update
+
     - name: install PostgreSQL
       run: sudo apt-get install libpq-dev
-        
+
     - name: install systemd development files
       run: sudo apt-get install libsystemd0 libsystemd-dev
-   
+
     - name: install popt development files
       run: sudo apt-get install libpopt-dev
-    
+
     - name: Checkout repository
       uses: actions/checkout@v4
 
