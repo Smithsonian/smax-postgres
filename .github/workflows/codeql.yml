@@ -58,7 +58,7 @@ jobs:
       run: sudo apt-get install libpq-dev
         
     - name: install systemd development files
-      run: sudo apt-get install libsystemd-dev
+      run: sudo apt-get install libsystemd0 libsystemd-dev
    
     - name: install popt development files
       run: sudo apt-get install libpopt-dev
