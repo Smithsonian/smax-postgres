@@ -1,4 +1,6 @@
 name: Test install
+permissions:
+  contents: read
 
 on: 
   push:
@@ -33,31 +35,31 @@ jobs:
     steps:
     - name: install PostgreSQL
       run: sudo apt-get install libpq-dev
-    
+
     - name: install systemd development files
       run: sudo apt-get install libsystemd-dev
-   
+
     - name: install popt development files
       run: sudo apt-get install libpopt-dev
-    
+
     - name: install doxygen
       run: sudo apt-get install doxygen
 
     - name: Check out smax-clib 
       uses: actions/checkout@v4
-      
+
     - name: Check out xchange 
       uses: actions/checkout@v4
       with:
         repository: Smithsonian/xchange
         path: xchange
-        
+
     - name: Check out RedisX
       uses: actions/checkout@v4
       with:
         repository: Smithsonian/redisx
         path: redisx
-    
+
     - name: Check out smax-clib
       uses: actions/checkout@v4
       with:
@@ -66,24 +68,24 @@ jobs:
 
     - name: Build xchange dependency
       run: make -C xchange shared
-    
+
     - name: Install xchange dependency
       run: sudo make -C xchange install
 
     - name: Build RedisX dependency
       run: make -C redisx shared
-    
+
     - name: Install RedisX dependency
       run: sudo make -C redisx install
 
     - name: Build smax-clib dependency
       run: make -C smax-clib shared
-    
+
     - name: Install smax-clib dependency
       run: sudo make -C smax-clib install
 
     - name: Build smax-postgres distro
       run: make distro
-      
+
     - name: Install smax-postgres in default location
-      run: sudo make install   
+      run: sudo make install

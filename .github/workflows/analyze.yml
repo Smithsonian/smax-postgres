@@ -1,4 +1,6 @@
 name: Static Analysis
+permissions:
+  contents: read
 
 on:
   push:
@@ -31,30 +33,30 @@ jobs:
       REDISX: redisx
       SMAXLIB: smax-clib
     steps:
-    
+
     - name: Check out smax-postgres
       uses: actions/checkout@v4
-    
+
     - name: Check out xchange dependency
       uses: actions/checkout@v4
       with:
         repository: Smithsonian/xchange
         path: xchange
-    
+
     - name: Check out RedisX dependency
       uses: actions/checkout@v4
       with:
         repository: Smithsonian/redisx
         path: redisx
-    
+
     - name: Check out smax-clib dependency
       uses: actions/checkout@v4
       with:
         repository: Smithsonian/smax-clib
         path: smax-clib
-    
+
     - name: install package dependencies
       run: sudo apt-get install -y cppcheck
-    
+
     - name: Run cppcheck
       run: make analyze

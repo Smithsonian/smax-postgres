@@ -29,7 +29,6 @@ on:
       - '*.md'
       - '.github/workflows/dox.yml'
 
-
 jobs:
 
   apidocs:
@@ -54,7 +53,7 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-    
+
     - name: install doxygen
       run: sudo apt-get install doxygen
 
@@ -69,19 +68,19 @@ jobs:
       with:
         repository: Smithsonian/xchange
         path: xchange
-        
+
     - name: Check out RedisX dependency
       uses: actions/checkout@v4
       with:
         repository: Smithsonian/redisx
         path: redisx
-        
+
     - name: Check out smax-clib dependency
       uses: actions/checkout@v4
       with:
         repository: Smithsonian/smax-clib
         path: smax-clib   
-     
+
     - name: Generate xchange docs
       run: make -C xchange local-dox 
 
@@ -129,7 +128,6 @@ jobs:
         git add -A
         git commit -m "[automated site update]" && git push || true
 
-
   changelog-update:
     name: Update CHANGELOG on github pages
     if: github.repository_owner == 'Smithsonian' && contains(github.event.head_commit.message, 'changelog update')
@@ -159,4 +157,3 @@ jobs:
         git config --global user.name "github-actions"
         git add -A
         git commit -m "[automated site update]" && git push || true
-

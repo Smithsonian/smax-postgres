@@ -10,6 +10,8 @@
 # supported CodeQL languages.
 #
 name: "CodeQL Advanced"
+permissions:
+  contents: read
 
 on:
   push:
@@ -103,7 +105,7 @@ jobs:
         make -C xchange shared
         make -C redisx shared
         make -C smax-clib shared
-        
+
     - name: Manual build
       shell: bash
       env:
@@ -113,7 +115,7 @@ jobs:
         CPPFLAGS: -I/usr/include/postgresql
       run: |
         make app
-    
+
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
       with:
