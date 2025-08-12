@@ -35,22 +35,22 @@ jobs:
     steps:
 
     - name: Check out smax-postgres
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
 
     - name: Check out xchange dependency
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         repository: Smithsonian/xchange
         path: xchange
 
     - name: Check out RedisX dependency
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         repository: Smithsonian/redisx
         path: redisx
 
     - name: Check out smax-clib dependency
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         repository: Smithsonian/smax-clib
         path: smax-clib

@@ -69,22 +69,22 @@ jobs:
       run: sudo apt-get install libpopt-dev
 
     - name: Checkout repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
 
     - name: Checkout xchange dependency
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         repository: Smithsonian/xchange
         path: xchange
 
     - name: Checkout RedisX dependency
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         repository: Smithsonian/redisx
         path: redisx
 
     - name: Checkout smax-clib dependency
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         repository: Smithsonian/smax-clib
         path: smax-clib
