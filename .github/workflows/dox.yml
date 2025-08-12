@@ -41,7 +41,7 @@ jobs:
       run: sudo apt-get install doxygen
 
     - name: Check out smax-postgres
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
 
     - name: Generate docs
       run: make local-dox
@@ -58,25 +58,25 @@ jobs:
       run: sudo apt-get install doxygen
 
     - name: Checkout smax-postgres
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         repository: Smithsonian/smax-postgres
         path: smax-postgres
 
     - name: Check out xchange dependency
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         repository: Smithsonian/xchange
         path: xchange
 
     - name: Check out RedisX dependency
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         repository: Smithsonian/redisx
         path: redisx
 
     - name: Check out smax-clib dependency
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         repository: Smithsonian/smax-clib
         path: smax-clib   
@@ -100,7 +100,7 @@ jobs:
         working-directory: ./smax-postgres
 
     - name: Checkout gh-pages
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         ref: 'gh-pages'
         path: site
@@ -136,10 +136,10 @@ jobs:
     steps:
 
     - name: Checkout source
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
 
     - name: Checkout gh-pages
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         ref: 'gh-pages'
         path: site
